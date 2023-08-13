@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Application.IService
-{
+namespace MH.Application.IService;
+//todo: clarification
+//why are we returning view models here? 
+//an api should not be concerned with the UI of an integration
+
     public interface ITicketDetailsService
     {
         Task<List<TicketDetailsViewModel>> GetAll();
@@ -17,4 +15,4 @@ namespace MH.Application.IService
         Task Update(TicketDetailsModel ticketDetails);
         Task Delete(int id); 
     }
-}
+

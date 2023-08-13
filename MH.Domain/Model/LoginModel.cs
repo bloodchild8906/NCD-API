@@ -1,8 +1,7 @@
-﻿namespace MH.Domain.Model
+﻿namespace MH.Domain.Model;
+
+public class LoginModel
 {
-    public class LoginModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }

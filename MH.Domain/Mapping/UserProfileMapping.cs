@@ -4,14 +4,13 @@ using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Domain.Mapping
+namespace MH.Domain.Mapping;
+
+public class UserProfileMapping : Profile
 {
-    public class UserProfileMapping : Profile
+    public UserProfileMapping()
     {
-        public UserProfileMapping()
-        {
-            CreateMap<UserProfile,UserProfileModel>().ReverseMap();
-            CreateMap<UserProfile, UserProfileViewModel>().ReverseMap();
-        }
+        CreateMap<UserProfile,UserProfileModel>().ReverseMap();
+        CreateMap<UserProfile, UserProfileViewModel>().ReverseMap();
     }
 }

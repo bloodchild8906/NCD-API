@@ -1,9 +1,8 @@
-﻿namespace MH.Application.Settings
+﻿namespace MH.Application.Settings;
+
+public class JWTSettings
 {
-    public class JWTSettings
-    {
-        public string ValidAudience { get; set; }
-        public string ValidIssuer { get; set; }
-        public string Secret { get; set; }
-    }
+    public string ValidAudience { get; set; }
+    public string ValidIssuer { get; set; }
+    public string Secret { get; set; }
 }

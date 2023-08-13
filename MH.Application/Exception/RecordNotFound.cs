@@ -1,17 +1,10 @@
-﻿using MH.Domain.Constant;
+﻿using System.Linq.Expressions;
 
-namespace MH.Application.Exception
+namespace MH.Application.Exception;
+
+public class RecordNotFound : DomainException
 {
-    public class RecordNotFound : DomainException
-    {
-        public RecordNotFound(string msg = "The record you are trying to update is not found") : base(msg)
-        {
+    public RecordNotFound(string msg = "The record you are trying to update is not found") : base(msg)
+        => Expression.Empty();
 
-        }
-
-        public override int ToHttpStatusCode()
-        {
-            return AppStatusCode.BadRequestStatusCode;
-        }
-    }
 }

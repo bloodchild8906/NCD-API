@@ -1,10 +1,9 @@
 ﻿
 
-namespace MH.Domain.Constant
+namespace MH.Domain.Constant;
+
+public static class ActionModeConst
 {
-    public static class ActionModeConst
-    {
-        public static string View = "view";
-        public static string Edit = "edit";
-    }
+    public static string View = "view";
+    public static string Edit = "edit";
 }

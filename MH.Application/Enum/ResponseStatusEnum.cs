@@ -1,8 +1,3 @@
-﻿namespace MH.Application.Enum
-{
-    public enum ResponseStatus
-    {
-        OK = 1,
-        FAILED = 0
-    }
-}
+﻿namespace MH.Application.Enum;
+
+public enum ResponseStatus { Failed, Ok }

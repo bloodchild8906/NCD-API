@@ -1,10 +1,9 @@
 ﻿
 using MH.Domain.DBModel;
 
-namespace MH.Domain.IRepository
+namespace MH.Domain.IRepository;
+
+public interface IRoleRepository
 {
-    public interface IRoleRepository
-    {
-        Task<Role> GetById(int id);
-    }
+    Task<Role> GetById(int id);
 }

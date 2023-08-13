@@ -1,9 +1,8 @@
-﻿namespace MH.Domain.Constant
+﻿namespace MH.Domain.Constant;
+
+public class DbDataType
 {
-    public class DbDataType
-    {
-        public const string DateTime = "datetime";
-        public const string Date = "date";
-        public const string Xml = "xml";
-    }
+    public const string DateTime = "datetime";
+    public const string Date = "date";
+    public const string Xml = "xml";
 }

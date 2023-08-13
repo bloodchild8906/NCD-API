@@ -1,9 +1,8 @@
 ﻿using MH.Domain.DBModel;
 
-namespace MH.Domain.IEntity
+namespace MH.Domain.IEntity;
+
+public interface ICurrentUser
 {
-    public interface ICurrentUser
-    {
-        public ApplicationUser User { get; }
-    }
+    public ApplicationUser User { get; }
 }

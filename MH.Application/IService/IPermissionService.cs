@@ -1,17 +1,11 @@
-﻿using AutoMapper;
-using MH.Domain.DBModel;
-using MH.Domain.IRepository;
-using MH.Domain.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MH.Domain.ViewModel;
 
-namespace MH.Application.IService
+namespace MH.Application.IService;
+//todo: clarification
+//why are we returning view models here? 
+//an api should not be concerned with the UI of an integration
+
+public interface IPermissionService
 {
-    public interface IPermissionService
-    {
-        Task<List<PermissionViewModel>> GetAllPermission();
-    }
+    Task<List<PermissionViewModel>> GetAllPermission();
 }

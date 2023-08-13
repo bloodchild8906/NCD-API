@@ -1,28 +1,33 @@
-﻿using MH.Domain.Constant;
+﻿using System.Security.Claims;
+using MH.Domain.Constant;
 using MH.Domain.IEntity;
 using MH.Domain.DBModel;
 using Microsoft.AspNetCore.Http;
 
-namespace MH.Application.Service
+namespace MH.Application.Service;
+
+public class CurrentUser : ICurrentUser
 {
-    public class CurrentUser : ICurrentUser
+    private readonly IHttpContextAccessor _accessor;
+    public CurrentUser(IHttpContextAccessor accessor)
     {
-        private readonly IHttpContextAccessor _accessor;
-        public CurrentUser(IHttpContextAccessor accessor)
-        {
-            _accessor = accessor;
-        }
-
-        public ApplicationUser User => new ApplicationUser()
-        {
-            Id = Convert.ToInt32(_accessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimConstant.Id)?.Value),
-            UserName = _accessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimConstant.UserName)
-                ?.Value,
-            NormalizedUserName = _accessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimConstant.Name)
-                ?.Value,
-            Email = _accessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimConstant.Email)?.Value
-        };
-
+        _accessor = accessor;
     }
-}
 
+    //todo: Create ext method to on claim type
+    private Claim? GetClaim(string claimConstant) =>
+        _accessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimConstant);
+    private int GetClaimId => Convert.ToInt32(GetClaim(ClaimConstant.Id)?.Value);
+    private string? GetClaimUsername => GetClaim(ClaimConstant.UserName)?.Value;
+    private string? GetClaimFirstName => GetClaim(ClaimConstant.Name)?.Value;
+    private string? GetClaimEmail => GetClaim(ClaimConstant.Email)?.Value;
+  
+    public ApplicationUser User => new()
+    {
+        Id = GetClaimId,
+        UserName = GetClaimUsername,
+        NormalizedUserName = GetClaimFirstName,
+        Email = GetClaimEmail
+    };
+
+}

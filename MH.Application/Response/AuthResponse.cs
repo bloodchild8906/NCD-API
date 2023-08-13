@@ -1,7 +1,6 @@
-﻿namespace MH.Application.Response
+﻿namespace MH.Application.Response;
+
+public class AuthResponse
 {
-    public class AuthResponse
-    {
-        public List<string> Errors { get; set; }
-    }
+    public List<string> Errors { get; set; } = new();
 }

@@ -4,14 +4,13 @@ using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Domain.Mapping
+namespace MH.Domain.Mapping;
+
+public class PositionMapping : Profile
 {
-    public class PositionMapping : Profile
+    public PositionMapping()
     {
-        public PositionMapping()
-        {
-            CreateMap<Position,PositionModel>().ReverseMap();
-            CreateMap<Position,PositionViewModel>().ReverseMap();
-        }
+        CreateMap<Position,PositionModel>().ReverseMap();
+        CreateMap<Position,PositionViewModel>().ReverseMap();
     }
 }
