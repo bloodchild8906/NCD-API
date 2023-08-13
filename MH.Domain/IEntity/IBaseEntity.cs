@@ -1,8 +1,7 @@
-﻿namespace MH.Domain.IEntity
+﻿namespace MH.Domain.IEntity;
+
+internal interface IBaseEntity<TId>
 {
-    internal interface IBaseEntity<TId>
-    {
-        public TId Id { get; set; }
-        //public DateTime DateCreated { get; set; }
-    }
+    public TId Id { get; set; }
+    //public DateTime DateCreated { get; set; }
 }

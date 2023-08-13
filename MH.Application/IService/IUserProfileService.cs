@@ -1,21 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Application.IService
+namespace MH.Application.IService;
+//todo: clarification
+//why are we returning view models here? 
+//an api should not be concerned with the UI of an integration
+
+public interface IUserProfileService
 {
-    public interface IUserProfileService
-    {
-        Task<List<UserProfileViewModel>> GetAll();
-        Task<UserProfileViewModel> GetById(int id);
-        Task<UserProfileViewModel> GetByUserId(int id);
-        Task Add(UserProfileModel userProfile);
-        Task Update(UserProfileModel userProfile);
-        Task Delete(int id); 
-    }
+    Task<List<UserProfileViewModel>> GetAll();
+    Task<UserProfileViewModel> GetById(int id);
+    Task<UserProfileViewModel> GetByUserId(int id);
+    Task Add(UserProfileModel userProfile);
+    Task Update(UserProfileModel userProfile);
+    Task Delete(int id); 
 }

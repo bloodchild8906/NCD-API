@@ -4,14 +4,13 @@ using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Domain.Mapping
+namespace MH.Domain.Mapping;
+
+public class PriorityMapping : Profile
 {
-    public class PriorityMapping : Profile
+    public PriorityMapping()
     {
-        public PriorityMapping()
-        {
-            CreateMap<Priority,PriorityModel>().ReverseMap();
-            CreateMap<Priority,PriorityViewModel>().ReverseMap();
-        }
+        CreateMap<Priority,PriorityModel>().ReverseMap();
+        CreateMap<Priority,PriorityViewModel>().ReverseMap();
     }
 }

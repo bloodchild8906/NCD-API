@@ -1,10 +1,9 @@
-﻿namespace MH.Domain.Constant
+﻿namespace MH.Domain.Constant;
+
+public static class RoleConst
 {
-    public static class RoleConst
-    {
-        public static string ADMIN = "Admin";
-        public static string USER = "User";
-        public static string PARTNER = "Partner";
+    public static string ADMIN = "Admin";
+    public static string USER = "User";
+    public static string PARTNER = "Partner";
  
-    }
 }

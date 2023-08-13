@@ -1,10 +1,9 @@
 ﻿using MH.Domain.Model;
 
-namespace MH.Domain.DBModel
+namespace MH.Domain.DBModel;
+
+public class Otp : BaseModel<int>
 {
-    public class Otp : BaseModel<int>
-    {
-        public int Code { get; set; }
-        public string MobileNo { get; set; }
-    }
+    public int Code { get; set; }
+    public string MobileNo { get; set; }
 }

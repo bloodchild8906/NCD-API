@@ -1,17 +1,13 @@
-﻿using MH.Domain.Constant;
+﻿using System.Linq.Expressions;
+using MH.Domain.Constant;
 
-namespace MH.Application.Exception
+namespace MH.Application.Exception;
+
+public class DomainException : System.Exception
 {
-    public class DomainException : System.Exception
-    {
-        public DomainException(string msg) : base(msg)
-        {
+    protected DomainException(string msg) : base(msg)
+        => Expression.Empty();
 
-        }
-
-        public virtual int ToHttpStatusCode()
-        {
-            return AppStatusCode.BadRequestStatusCode;
-        }
-    }
+    public virtual int ToHttpStatusCode() 
+        => AppStatusCode.BadRequestStatusCode;
 }

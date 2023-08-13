@@ -1,10 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 
-namespace MH.Domain.DBModel
+namespace MH.Domain.DBModel;
+
+public class Role : IdentityRole<int>
 {
-    public class Role : IdentityRole<int>
-    {
-        public virtual ICollection<UserRole> UserRoles { get; set; }
-    }
+    public virtual ICollection<UserRole> UserRoles { get; set; }
 }

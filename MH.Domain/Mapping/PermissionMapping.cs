@@ -2,14 +2,13 @@
 using MH.Domain.DBModel;
 using MH.Domain.ViewModel;
 
-namespace MH.Domain.Mapping
+namespace MH.Domain.Mapping;
+
+public class PermissionMapping : Profile
 {
-    public class PermissionMapping : Profile
+    public PermissionMapping()
     {
-        public PermissionMapping()
-        {
-            CreateMap<PermissionViewModel, Permission>()
-                .ReverseMap();
-        }
+        CreateMap<PermissionViewModel, Permission>()
+            .ReverseMap();
     }
 }

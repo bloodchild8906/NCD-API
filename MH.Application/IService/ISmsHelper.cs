@@ -1,7 +1,6 @@
-﻿namespace MH.Application.IService
+﻿namespace MH.Application.IService;
+
+public interface ISmsHelper
 {
-    public interface ISmsHelper
-    {
-        Task<int> SendSms(string mobileNumber);
-    }
+    Task<int> SendSms(string mobileNumber);
 }

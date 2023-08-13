@@ -4,14 +4,13 @@ using MH.Domain.Model;
 using MH.Domain.ViewModel;
 
 
-namespace MH.Domain.Mapping
+namespace MH.Domain.Mapping;
+
+public class OtpMapping : Profile
 {
-    public class OtpMapping : Profile
+    public OtpMapping()
     {
-        public OtpMapping()
-        {
-            CreateMap<Otp,OtpModel>().ReverseMap();
-            CreateMap<Otp,OtpViewModel>().ReverseMap();
-        }
+        CreateMap<Otp,OtpModel>().ReverseMap();
+        CreateMap<Otp,OtpViewModel>().ReverseMap();
     }
 }

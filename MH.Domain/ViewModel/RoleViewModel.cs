@@ -1,9 +1,8 @@
 ﻿
-namespace MH.Domain.ViewModel
+namespace MH.Domain.ViewModel;
+
+public class RoleViewModel
 {
-    public class RoleViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

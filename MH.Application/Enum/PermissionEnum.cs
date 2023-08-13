@@ -1,9 +1,4 @@
 ﻿
-namespace MH.Application.Enum
-{
-    public enum PermissionEnum
-    {
-        Read = 1,
-        Modify
-    }
-}
+namespace MH.Application.Enum;
+
+public enum PermissionEnum { Modify, Read }

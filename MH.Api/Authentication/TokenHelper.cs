@@ -4,89 +4,84 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MH.Domain.Constant;
 using MH.Domain.DBModel;
-using MH.Domain.Model;
-using Microsoft.AspNetCore.Identity;
-using Azure.Core;
-using System.Data;
 
-namespace MH.Api.Authentication
+namespace MH.Api.Authentication;
+
+public class TokenHelper
 {
-    public class TokenHelper
-    {
-        private readonly IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
         
-        public TokenHelper(IConfiguration configuration)
+    public TokenHelper(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    public async Task<string> GetToken(ApplicationUser user, IList<string> userRoles)
+    {
+        var authClaims = new List<Claim>
         {
-            _configuration = configuration;
+            new Claim(ClaimConstant.Id, user.Id.ToString()),
+            new Claim(ClaimConstant.UserName, user.UserName),
+            new Claim(ClaimConstant.FirstName, user.UserProfile.FirstName),
+            new Claim(ClaimConstant.LastName, user.UserProfile.LastName),
+            new Claim(ClaimConstant.Email, user.Email ?? ""),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+
+        foreach (var userRole in userRoles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         }
 
-        public async Task<string> GetToken(ApplicationUser user, IList<string> userRoles)
+        //TODO** Magic Word Should Be Replaced By Constant
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? string.Empty));
+        var token = new JwtSecurityToken(
+            issuer: _configuration["JWT:ValidIssuer"],
+            audience: _configuration["JWT:ValidAudience"],
+            expires: DateTime.Now.AddHours(Convert.ToInt16(_configuration["JWT:TokenValidityInHour"])),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        );
+        return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
+    }
+
+    public async Task<List<string>> ValidateToken(string token)
+    {
+        var roles = new List<string>();
+        if (token == null)
+            return null;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]);
+        try
         {
-            var authClaims = new List<Claim>
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
-                new Claim(ClaimConstant.Id, user.Id.ToString()),
-                new Claim(ClaimConstant.UserName, user.UserName),
-                new Claim(ClaimConstant.FirstName, user.UserProfile.FirstName),
-                new Claim(ClaimConstant.LastName, user.UserProfile.LastName),
-                new Claim(ClaimConstant.Email, user.Email ?? ""),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
 
-            foreach (var userRole in userRoles)
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == ClaimConstant.Id).Value);
+            if (userId <= 0) return null;
+
+            foreach (var item in jwtToken.Claims)
             {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-
-            //TODO** Magic Word Should Be Replaced By Constant
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? string.Empty));
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(Convert.ToInt16(_configuration["JWT:TokenValidityInHour"])),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-            );
-            return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
-        }
-
-        public async Task<List<string>> ValidateToken(string token)
-        {
-            var roles = new List<string>();
-            if (token == null)
-                return null;
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]);
-            try
-            {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                switch (item.Type)
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == ClaimConstant.Id).Value);
-                if (userId <= 0) return null;
-
-                foreach (var item in jwtToken.Claims)
-                {
-                    switch (item.Type)
-                    {
-                        case ClaimTypes.Role:
-                            roles.Add(item.Value);
-                            break;
-                    }
+                    case ClaimTypes.Role:
+                        roles.Add(item.Value);
+                        break;
                 }
-                return roles;
             }
-            catch(Exception ex)
-            {
-                return null;
-            }
+            return roles;
+        }
+        catch(Exception ex)
+        {
+            return null;
         }
     }
 }

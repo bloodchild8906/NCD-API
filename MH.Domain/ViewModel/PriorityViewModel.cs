@@ -1,12 +1,11 @@
 
-namespace MH.Domain.ViewModel
+namespace MH.Domain.ViewModel;
+
+public class PriorityViewModel
 {
-    public class PriorityViewModel
-    {
-        public int? Id { get; set; }
-        public string Name { get; set; }
+    public int? Id { get; set; }
+    public string Name { get; set; }
 
 
-        public DateTime DateCreated { get; set; }
-    }
+    public DateTime DateCreated { get; set; }
 }
