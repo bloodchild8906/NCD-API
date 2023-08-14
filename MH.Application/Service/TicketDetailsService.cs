@@ -1,10 +1,10 @@
 using AutoMapper;
 using MH.Application.IService;
 using MH.Domain.DBModel;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
 
 
 namespace MH.Application.Service;
@@ -28,17 +28,17 @@ public class TicketDetailsService : ITicketDetailsService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<TicketDetailsViewModel>> GetAll()
+    public async Task<List<TicketDetail>> GetAll()
     {
         var data = await _unitOfWork.TicketDetailsRepository.GetAll(ticketDetails => !ticketDetails.IsDeleted);
-        var result = _mapper.Map<List<TicketDetailsViewModel>>(data);
+        var result = _mapper.Map<List<TicketDetail>>(data);
         return result.OrderByDescending(viewModel=> viewModel.DateCreated).ToList();
     }
 
-    public async Task<TicketDetailsViewModel> GetById(int id)
+    public async Task<TicketDetail> GetById(int id)
     {
         var data = await _unitOfWork.TicketDetailsRepository.FindBy(ticketDetails => !ticketDetails.IsDeleted && ticketDetails.Id == id);
-        var result = _mapper.Map<TicketDetailsViewModel>(data);
+        var result = _mapper.Map<TicketDetail>(data);
         return result;
     }
 

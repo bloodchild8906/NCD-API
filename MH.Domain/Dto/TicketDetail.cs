@@ -1,7 +1,7 @@
 
-namespace MH.Domain.ViewModel;
+namespace MH.Domain.Dto;
 
-public class TicketDetailsViewModel
+public class TicketDetail
 {
     public int? Id { get; set; }
     public int UserId { get; set; }

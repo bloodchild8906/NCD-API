@@ -1,10 +1,10 @@
 using AutoMapper;
 using MH.Application.IService;
 using MH.Domain.DBModel;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
 
 namespace MH.Application.Service;
 
@@ -31,7 +31,7 @@ public class ContactDetailsService : IContactDetailsService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<ContactDetailsViewModel>> GetAll()
+    public async Task<List<ContactDetail>> GetAll()
     {
         var data = await _unitOfWork.ContactDetailsRepository
             .GetAll(details => !details.IsDeleted,
@@ -39,11 +39,11 @@ public class ContactDetailsService : IContactDetailsService
                 include => include.ContactDataType,
                 include => include.ContactType,
                 include => include.ContactEntity);
-        var result = _mapper.Map<List<ContactDetailsViewModel>>(data);
+        var result = _mapper.Map<List<ContactDetail>>(data);
         return result.OrderByDescending(detailsViewModel => detailsViewModel.DateCreated).ToList();
     }
 
-    public async Task<ContactDetailsViewModel> GetByUserId(int userId)
+    public async Task<ContactDetail> GetByUserId(int userId)
     {
         var data = await _unitOfWork.ContactDetailsRepository.FindBy(
             x => !x.IsDeleted && x.UserProfile.UserId == userId,
@@ -52,7 +52,7 @@ public class ContactDetailsService : IContactDetailsService
             include => include.ContactType,
             include => include.ContactEntity
         );
-        var result = _mapper.Map<ContactDetailsViewModel>(data);
+        var result = _mapper.Map<ContactDetail>(data);
         return result;
     }
 

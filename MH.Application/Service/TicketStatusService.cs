@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using TicketStatus = MH.Domain.Dto.TicketStatus;
 
 
 namespace MH.Application.Service;
@@ -23,26 +22,26 @@ public class TicketStatusService : ITicketStatusService
     }
     public async Task Add(TicketStatusModel ticketStatus)
     {
-        var data = _mapper.Map<TicketStatus>(ticketStatus);
+        var data = _mapper.Map<Domain.DBModel.TicketStatus>(ticketStatus);
         await _unitOfWork.TicketStatusRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<TicketStatusViewModel>> GetAll()
+    public async Task<List<TicketStatus>> GetAll()
     {
         var data = await _unitOfWork
             .TicketStatusRepository
             .GetAll(ticketStatus => !ticketStatus.IsDeleted);
-        var result = _mapper.Map<List<TicketStatusViewModel>>(data);
+        var result = _mapper.Map<List<TicketStatus>>(data);
         return result.OrderByDescending(x=> x.DateCreated).ToList();
     }
 
-    public async Task<TicketStatusViewModel> GetById(int id)
+    public async Task<TicketStatus> GetById(int id)
     {
         var data = await _unitOfWork
             .TicketStatusRepository
             .FindBy(ticketStatus => !ticketStatus.IsDeleted && ticketStatus.Id == id);
-        var result = _mapper.Map<TicketStatusViewModel>(data);
+        var result = _mapper.Map<TicketStatus>(data);
         return result;
     }
 

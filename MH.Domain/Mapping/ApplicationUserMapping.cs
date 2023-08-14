@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MH.Domain.DBModel;
+using MH.Domain.Dto;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
+using Role = MH.Domain.Dto.Role;
+using UserRole = MH.Domain.Dto.UserRole;
 
 namespace MH.Domain.Mapping;
 
@@ -14,9 +16,9 @@ public class ApplicationUserMapping : Profile
             .ForMember(u=>u.PasswordHash, opt=> opt.MapFrom(x=> x.Password))
             .ReverseMap();
 
-        CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
+        CreateMap<ApplicationUser, User>().ReverseMap();
 
-        CreateMap<UserRole, UserRoleViewModel>().ReverseMap();
-        CreateMap<Role, RoleViewModel>().ReverseMap();
+        CreateMap<DBModel.UserRole, UserRole>().ReverseMap();
+        CreateMap<DBModel.Role, Role>().ReverseMap();
     }
 }

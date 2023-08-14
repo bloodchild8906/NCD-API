@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -30,7 +30,7 @@ public class MedicalHistoryController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(List<MedicalHistoryViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(List<MedicalHistory>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _medicalHistoryService.GetAll();
@@ -39,7 +39,7 @@ public class MedicalHistoryController : BaseController
 
     [HttpGet]
     [Route("GetById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(MedicalHistoryViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(MedicalHistory))]
     public async Task<ActionResult> GetById([FromQuery] int id)
     {
         var result = await _medicalHistoryService.GetById(id);
@@ -47,7 +47,7 @@ public class MedicalHistoryController : BaseController
     }
     [HttpGet]
     [Route("GetByPatientId")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(MedicalHistoryViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(MedicalHistory))]
     public async Task<ActionResult> GetByPatientId([FromQuery] int id)
     {
         var result = await _medicalHistoryService.GetByPatientId(id);

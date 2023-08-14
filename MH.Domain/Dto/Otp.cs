@@ -1,7 +1,7 @@
 
-namespace MH.Domain.ViewModel;
+namespace MH.Domain.Dto;
 
-public class OtpViewModel
+public class Otp
 {
     public int? Id { get; set; }
     public int Code { get; set; }

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -30,7 +30,7 @@ public class ContactDetailsController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return ContactDetails data", typeof(List<ContactDetailsViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return ContactDetails data", typeof(List<ContactDetail>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _contactDetailsService.GetAll();
@@ -39,7 +39,7 @@ public class ContactDetailsController : BaseController
 
     [HttpGet]
     [Route("GetByUserId")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return ContactDetails data", typeof(ContactDetailsViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return ContactDetails data", typeof(ContactDetail))]
     public async Task<ActionResult> GetByUserId([FromQuery] int userId)
     {
         var result = await _contactDetailsService.GetByUserId(userId);

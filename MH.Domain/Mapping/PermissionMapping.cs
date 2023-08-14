@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using MH.Domain.DBModel;
-using MH.Domain.ViewModel;
+using Permission = MH.Domain.Dto.Permission;
 
 namespace MH.Domain.Mapping;
 
@@ -8,7 +7,7 @@ public class PermissionMapping : Profile
 {
     public PermissionMapping()
     {
-        CreateMap<PermissionViewModel, Permission>()
+        CreateMap<Permission, DBModel.Permission>()
             .ReverseMap();
     }
 }

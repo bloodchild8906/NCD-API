@@ -1,11 +1,8 @@
-﻿using MH.Domain.ViewModel;
+﻿using MH.Domain.Dto;
 
 namespace MH.Application.IService;
-//todo: clarification
-//why are we returning view models here? 
-//an api should not be concerned with the UI of an integration
 
 public interface IPermissionService
 {
-    Task<List<PermissionViewModel>> GetAllPermission();
+    Task<List<Permission>> GetAllPermission();
 }

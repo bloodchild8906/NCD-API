@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using Patient = MH.Domain.Dto.Patient;
 
 
 namespace MH.Application.Service;
@@ -23,22 +22,22 @@ public class PatientService : IPatientService
     }
     public async Task Add(PatientModel patient)
     {
-        var data = _mapper.Map<Patient>(patient);
+        var data = _mapper.Map<Domain.DBModel.Patient>(patient);
         await _unitOfWork.PatientRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<PatientViewModel>> GetAll()
+    public async Task<List<Patient>> GetAll()
     {
         var data = await _unitOfWork.PatientRepository.GetAll(x => !x.IsDeleted);
-        var result = _mapper.Map<List<PatientViewModel>>(data);
+        var result = _mapper.Map<List<Patient>>(data);
         return result.OrderByDescending(x=> x.Id).ToList();
     }
 
-    public async Task<PatientViewModel> GetById(int id)
+    public async Task<Patient> GetById(int id)
     {
         var data = await _unitOfWork.PatientRepository.FindBy(x => !x.IsDeleted && x.Id == id);
-        var result = _mapper.Map<PatientViewModel>(data);
+        var result = _mapper.Map<Patient>(data);
         return result;
     }
 

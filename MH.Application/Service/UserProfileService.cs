@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using UserProfile = MH.Domain.Dto.UserProfile;
 
 
 namespace MH.Application.Service;
@@ -26,28 +25,28 @@ public class UserProfileService : IUserProfileService
     }
     public async Task Add(UserProfileModel userProfileModel)
     {
-        var data = _mapper.Map<UserProfile>(userProfileModel);
+        var data = _mapper.Map<Domain.DBModel.UserProfile>(userProfileModel);
         await _unitOfWork.UserProfileRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<UserProfileViewModel>> GetAll()
+    public async Task<List<UserProfile>> GetAll()
     {
         var data = await _unitOfWork.UserProfileRepository.GetAll(userProfile => !userProfile.IsDeleted,userProfile=> userProfile.User);
-        var result = _mapper.Map<List<UserProfileViewModel>>(data);
+        var result = _mapper.Map<List<UserProfile>>(data);
         return result.OrderByDescending(x=> x.DateCreated).ToList();
     }
 
-    public async Task<UserProfileViewModel> GetById(int id)
+    public async Task<UserProfile> GetById(int id)
     {
         var data = await _unitOfWork.UserProfileRepository.FindBy(x => !x.IsDeleted && x.Id == id, x => x.User);
-        var result = _mapper.Map<UserProfileViewModel>(data);
+        var result = _mapper.Map<UserProfile>(data);
         return result;
     }
-    public async Task<UserProfileViewModel> GetByUserId(int userId)
+    public async Task<UserProfile> GetByUserId(int userId)
     {
         var data = await _unitOfWork.UserProfileRepository.FindBy(x => !x.IsDeleted && x.UserId == userId, x => x.User);
-        var result = _mapper.Map<UserProfileViewModel>(data);
+        var result = _mapper.Map<UserProfile>(data);
         return result;
     }
 

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -30,7 +30,7 @@ public class TicketStatusController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return TicketStatus data", typeof(List<TicketStatusViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return TicketStatus data", typeof(List<TicketStatus>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _ticketStatusService.GetAll();
@@ -39,7 +39,7 @@ public class TicketStatusController : BaseController
 
     //[HttpGet]
     //[Route("GetById")]
-    //[SwaggerResponse(StatusCodes.Status200OK, "Return TicketStatus data", typeof(TicketStatusViewModel))]
+    //[SwaggerResponse(StatusCodes.Status200OK, "Return TicketStatus data", typeof(TicketStatus))]
     //public async Task<ActionResult> GetById([FromQuery] int id)
     //{
     //    var result = await _ticketStatusService.GetById(id);

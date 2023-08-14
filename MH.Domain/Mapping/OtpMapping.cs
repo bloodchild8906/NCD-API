@@ -1,7 +1,6 @@
 using AutoMapper;
-using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
+using Otp = MH.Domain.Dto.Otp;
 
 
 namespace MH.Domain.Mapping;
@@ -10,7 +9,7 @@ public class OtpMapping : Profile
 {
     public OtpMapping()
     {
-        CreateMap<Otp,OtpModel>().ReverseMap();
-        CreateMap<Otp,OtpViewModel>().ReverseMap();
+        CreateMap<DBModel.Otp,OtpModel>().ReverseMap();
+        CreateMap<DBModel.Otp,Otp>().ReverseMap();
     }
 }

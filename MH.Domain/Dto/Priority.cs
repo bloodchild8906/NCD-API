@@ -1,6 +1,7 @@
-namespace MH.Domain.ViewModel;
 
-public class IssueViewModel
+namespace MH.Domain.Dto;
+
+public class Priority
 {
     public int? Id { get; set; }
     public string Name { get; set; }

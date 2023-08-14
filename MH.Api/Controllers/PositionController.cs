@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
 using Swashbuckle.AspNetCore.Annotations;
-using MH.Domain.ViewModel;
 
 namespace MH.Api.Controllers;
 
@@ -30,7 +30,7 @@ public class PositionController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Position data", typeof(List<PositionViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Position data", typeof(List<Position>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _positionService.GetAll();
@@ -39,7 +39,7 @@ public class PositionController : BaseController
 
     [HttpGet]
     [Route("GetById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Position data", typeof(PositionViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Position data", typeof(Position))]
     public async Task<ActionResult> GetById([FromQuery] int id)
     {
         var result = await _positionService.GetById(id);

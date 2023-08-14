@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using Issue = MH.Domain.Dto.Issue;
 
 
 namespace MH.Application.Service;
@@ -23,22 +22,22 @@ public class IssueService : IIssueService
     }
     public async Task Add(IssueModel issue)
     {
-        var data = _mapper.Map<Issue>(issue);
+        var data = _mapper.Map<Domain.DBModel.Issue>(issue);
         await _unitOfWork.IssueRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<IssueViewModel>> GetAll()
+    public async Task<List<Issue>> GetAll()
     {
         var data = await _unitOfWork.IssueRepository.GetAll(issue => !issue.IsDeleted);
-        var result = _mapper.Map<List<IssueViewModel>>(data);
+        var result = _mapper.Map<List<Issue>>(data);
         return result.OrderByDescending(issueViewModel=> issueViewModel.DateCreated).ToList();
     }
 
-    public async Task<IssueViewModel> GetById(int id)
+    public async Task<Issue> GetById(int id)
     {
         var data = await _unitOfWork.IssueRepository.FindBy(issue => !issue.IsDeleted && issue.Id == id);
-        var result = _mapper.Map<IssueViewModel>(data);
+        var result = _mapper.Map<Issue>(data);
         return result;
     }
 

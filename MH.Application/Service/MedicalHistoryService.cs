@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using MedicalHistory = MH.Domain.Dto.MedicalHistory;
 
 namespace MH.Application.Service;
 
@@ -22,7 +21,7 @@ public class MedicalHistoryService : IMedicalHistoryService
     }
     public async Task Add(MedicalHistoryModel medicalHistoryModel)
     {
-        var medicalHistory = new MedicalHistory
+        var medicalHistory = new Domain.DBModel.MedicalHistory
         {
             RecordedBy = medicalHistoryModel.RecordedBy,
             PatientId = medicalHistoryModel.PatientId,
@@ -44,29 +43,29 @@ public class MedicalHistoryService : IMedicalHistoryService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<MedicalHistoryViewModel>> GetAll()
+    public async Task<List<MedicalHistory>> GetAll()
     {
         var data = await _unitOfWork
             .MedicalHistoryRepository
             .GetAll(medicalHistory => !medicalHistory.IsDeleted, 
             medicalHistory=> medicalHistory.Patient);
-        var result = _mapper.Map<List<MedicalHistoryViewModel>>(data);
+        var result = _mapper.Map<List<MedicalHistory>>(data);
         return result.OrderByDescending(x=> x.DateCreated).ToList();
     }
 
-    public async Task<MedicalHistoryViewModel> GetById(int id)
+    public async Task<MedicalHistory> GetById(int id)
     {
         var data = await _unitOfWork.MedicalHistoryRepository.FindBy(medicalHistory => !medicalHistory.IsDeleted && medicalHistory.Id == id, y => y.Patient);
-        var result = _mapper.Map<MedicalHistoryViewModel>(data);
+        var result = _mapper.Map<MedicalHistory>(data);
         return result;
     }
-    public async Task<List<MedicalHistoryViewModel>> GetByPatientId(int patientId)
+    public async Task<List<MedicalHistory>> GetByPatientId(int patientId)
     {
         var data = await _unitOfWork
             .MedicalHistoryRepository
             .GetAll(medicalHistory => !medicalHistory.IsDeleted && medicalHistory.PatientId == patientId, 
                 medicalHistory => medicalHistory.Patient);
-        var result = _mapper.Map<List<MedicalHistoryViewModel>>(data);
+        var result = _mapper.Map<List<MedicalHistory>>(data);
         return result;
     }
 

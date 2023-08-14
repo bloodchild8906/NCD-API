@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using MH.Application.IService;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
+using Role = MH.Domain.Dto.Role;
 
 namespace MH.Api.Controllers;
 
@@ -23,11 +22,11 @@ public class RoleController : BaseController
 
     [HttpGet]
     [Route("GetRoles")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<RoleViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<Role>))]
     public async Task<IActionResult> GetRoles()
     {
         var roles = (await _roleManager.Roles.ToListAsync())
-            .Select(x=> new RoleViewModel 
+            .Select(x=> new Role 
             { 
                 Id = x.Id,
                 Name = x.Name
@@ -39,7 +38,7 @@ public class RoleController : BaseController
     [Route("Add")]
     public async Task<IActionResult> Add([FromBody] RoleModel roleModel)
     {
-        var role = new Role()
+        var role = new Domain.DBModel.Role()
         {
             Name = roleModel.Name,
             NormalizedName = roleModel.Name.ToUpper(),
@@ -56,7 +55,7 @@ public class RoleController : BaseController
         var existingRole = await _roleService.GetById(roleModel.Id);
         if(existingRole != null)
         {
-            var role = new Role()
+            var role = new Domain.DBModel.Role()
             {
                 Id = existingRole.Id,
                 Name = roleModel.Name,

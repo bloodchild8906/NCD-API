@@ -1,7 +1,6 @@
 using AutoMapper;
-using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
+using Appointment = MH.Domain.Dto.Appointment;
 
 
 namespace MH.Domain.Mapping;
@@ -10,8 +9,8 @@ public class AppointmentMapping : Profile
 {
     public AppointmentMapping()
     {
-        CreateMap<Appointment,AppointmentModel>().ReverseMap();
-        CreateMap<Appointment,AppointmentViewModel>()
+        CreateMap<DBModel.Appointment,AppointmentModel>().ReverseMap();
+        CreateMap<DBModel.Appointment,Appointment>()
             .ForMember(src => src.Name, dest => dest.MapFrom(x => x.Patient.Name))
             .ForMember(src => src.Surname, dest => dest.MapFrom(x => x.Patient.Surname))
             .ForMember(src => src.PhoneNumber, dest => dest.MapFrom(x => x.Patient.PhoneNumber))

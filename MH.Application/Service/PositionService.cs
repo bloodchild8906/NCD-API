@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using Position = MH.Domain.Dto.Position;
 
 
 namespace MH.Application.Service;
@@ -24,26 +23,26 @@ public class PositionService : IPositionService
 
     public async Task Add(PositionModel position)
     {
-        var data = _mapper.Map<Position>(position);
+        var data = _mapper.Map<Domain.DBModel.Position>(position);
         await _unitOfWork.PositionRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<PositionViewModel>> GetAll()
+    public async Task<List<Position>> GetAll()
     {
         var data = await _unitOfWork
             .PositionRepository
             .GetAll(position => !position.IsDeleted);
-        var result = _mapper.Map<List<PositionViewModel>>(data);
+        var result = _mapper.Map<List<Position>>(data);
         return result.OrderByDescending(x => x.DateCreated).ToList();
     }
 
-    public async Task<PositionViewModel> GetById(int id)
+    public async Task<Position> GetById(int id)
     {
         var data = await _unitOfWork
             .PositionRepository
             .FindBy(position => !position.IsDeleted && position.Id == id);
-        var result = _mapper.Map<PositionViewModel>(data);
+        var result = _mapper.Map<Position>(data);
         return result;
     }
 

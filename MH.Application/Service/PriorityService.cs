@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
-using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MH.Domain.ViewModel;
+using Priority = MH.Domain.Dto.Priority;
 
 
 namespace MH.Application.Service;
@@ -23,22 +22,22 @@ public class PriorityService : IPriorityService
     }
     public async Task Add(PriorityModel priority)
     {
-        var data = _mapper.Map<Priority>(priority);
+        var data = _mapper.Map<Domain.DBModel.Priority>(priority);
         await _unitOfWork.PriorityRepository.Insert(data);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<PriorityViewModel>> GetAll()
+    public async Task<List<Priority>> GetAll()
     {
         var data = await _unitOfWork.PriorityRepository.GetAll(priority => !priority.IsDeleted);
-        var result = _mapper.Map<List<PriorityViewModel>>(data);
+        var result = _mapper.Map<List<Priority>>(data);
         return result.OrderByDescending(priorityViewModel=> priorityViewModel.DateCreated).ToList();
     }
 
-    public async Task<PriorityViewModel> GetById(int id)
+    public async Task<Priority> GetById(int id)
     {
         var data = await _unitOfWork.PriorityRepository.FindBy(priority => !priority.IsDeleted && priority.Id == id);
-        var result = _mapper.Map<PriorityViewModel>(data);
+        var result = _mapper.Map<Priority>(data);
         return result;
     }
 

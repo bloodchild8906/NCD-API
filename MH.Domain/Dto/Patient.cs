@@ -1,7 +1,7 @@
 
-namespace MH.Domain.ViewModel;
+namespace MH.Domain.Dto;
 
-public class PatientViewModel
+public class Patient
 {
     public int? Id { get; set; }
 

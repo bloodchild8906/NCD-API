@@ -26,7 +26,7 @@ public class OtpController : BaseController
 
     //[HttpGet]
     //[Route("GetAll")]
-    //[SwaggerResponse(StatusCodes.Status200OK, "Return Otp data", typeof(List<OtpViewModel>))]
+    //[SwaggerResponse(StatusCodes.Status200OK, "Return Otp data", typeof(List<Otp>))]
     //public async Task<ActionResult> GetAll()
     //{
     //    var result = await _otpService.GetAll();
@@ -35,7 +35,7 @@ public class OtpController : BaseController
 
     //[HttpGet]
     //[Route("GetById")]
-    //[SwaggerResponse(StatusCodes.Status200OK, "Return Otp data", typeof(OtpViewModel))]
+    //[SwaggerResponse(StatusCodes.Status200OK, "Return Otp data", typeof(Otp))]
     //public async Task<ActionResult> GetById([FromQuery] int id)
     //{
     //    var result = await _otpService.GetById(id);

@@ -2,8 +2,8 @@
 
 public static class RoleConst
 {
-    public static string ADMIN = "Admin";
-    public static string USER = "User";
-    public static string PARTNER = "Partner";
+    public const string Admin = "Admin";
+    public const string User = "User";
+    public const string Partner = "Partner";
  
 }

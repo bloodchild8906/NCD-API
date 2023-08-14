@@ -1,7 +1,7 @@
 
-namespace MH.Domain.ViewModel;
+namespace MH.Domain.Dto;
 
-public class AppointmentViewModel
+public class Appointment
 {
     public int? Id { get; set; }
     public int PatientId { get; set; }

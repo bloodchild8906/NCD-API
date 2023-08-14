@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -30,7 +30,7 @@ public class PriorityController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Priority data", typeof(List<PriorityViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Priority data", typeof(List<Priority>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _priorityService.GetAll();
@@ -39,7 +39,7 @@ public class PriorityController : BaseController
 
     [HttpGet]
     [Route("GetById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Priority data", typeof(PriorityViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Priority data", typeof(Priority))]
     public async Task<ActionResult> GetById([FromQuery] int id)
     {
         var result = await _priorityService.GetById(id);

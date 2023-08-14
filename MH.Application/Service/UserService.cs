@@ -4,11 +4,12 @@ using MH.Application.IService;
 using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using MH.Domain.Constant;
 using MH.Application.Exception;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.UnitOfWork;
+using UserRole = MH.Domain.DBModel.UserRole;
 
 namespace MH.Application.Service;
 
@@ -25,13 +26,13 @@ public class UserService : IUserService
         _currentUser = currentUser;
     }
 
-    public async Task<UserViewModel> GetUserById(int id)
+    public async Task<User> GetUserById(int id)
     {
         var user = await _userRepository.GetUserById(id);
 
         if (user == null) throw new RecordNotFound("User id not found");
 
-        var data =  new UserViewModel()
+        var data =  new User()
         {
             Id = user.Id,
             FirstName = user.UserProfile.FirstName,
@@ -65,14 +66,14 @@ public class UserService : IUserService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null) return false;
-        var isAdmin = (await _userManager.GetRolesAsync(user)).FirstOrDefault(x => x == RoleConst.ADMIN);
+        var isAdmin = (await _userManager.GetRolesAsync(user)).FirstOrDefault(x => x == RoleConst.Admin);
         return isAdmin != null;
 
     }
     public async Task<bool> CanViewOrEdit(int userId)
     {
         if (await _userManager.FindByIdAsync(_currentUser.User.Id.ToString()) is not { } user) return false;
-        var isAdmin = (await _userManager.GetRolesAsync(user)).FirstOrDefault(role => role == RoleConst.ADMIN);
+        var isAdmin = (await _userManager.GetRolesAsync(user)).FirstOrDefault(role => role == RoleConst.Admin);
         return isAdmin != null || userId == _currentUser.User.Id;
     }
 

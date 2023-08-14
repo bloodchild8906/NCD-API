@@ -1,8 +1,9 @@
-using MH.Api;
 using MH.Domain.Constant;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
+
+namespace MH.Api;
 
 public class Program
 {
@@ -47,12 +48,11 @@ public class Program
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.UseConfiguration(Configuration);
-                });
-                //.UseSerilog();
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                webBuilder.UseConfiguration(Configuration);
+            });
+    //.UseSerilog();
 }
-

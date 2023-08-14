@@ -1,7 +1,7 @@
 
-namespace MH.Domain.ViewModel;
+namespace MH.Domain.Dto;
 
-public class MedicalHistoryViewModel
+public class MedicalHistory
 {
     public int? Id { get; set; }
     //public byte[]? Documents { get; set; }

@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using MH.Application.IService;
 using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using MH.Application.Enum;
 using MH.Domain.IEntity;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Annotations;
 using MH.Api.Authentication;
+using MH.Domain.Dto;
+using Role = MH.Domain.DBModel.Role;
+using UserProfile = MH.Domain.DBModel.UserProfile;
 
 namespace MH.Api.Controllers;
 
@@ -72,7 +74,7 @@ public class UserController : BaseController
     }
     [HttpGet]
     [Route("GetUsers")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return User data", typeof(List<UserViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return User data", typeof(List<User>))]
 
     public async Task<IActionResult> GetUsers()
     {
@@ -90,7 +92,7 @@ public class UserController : BaseController
             .Include(x => x.UserProfile.ContactDetails.ContactEntity)
             .Include(x => x.Position)
             .Where(x=> x.Status != 0)
-            .Select(user => new UserViewModel {
+            .Select(user => new User {
                 Id = user.Id,
                 FirstName = user.UserProfile != null ? user.UserProfile.FirstName : "",
                 LastName = user.UserProfile != null ? user.UserProfile.LastName : "",
@@ -117,7 +119,7 @@ public class UserController : BaseController
         
     [HttpGet]
     [Route("GetUserById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return User data", typeof(UserViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return User data", typeof(User))]
     public async Task<IActionResult> GetUserById(int id)
     {
         if (!await _userService.CanViewOrEdit(id))

@@ -1,7 +1,6 @@
 using AutoMapper;
-using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
+using Issue = MH.Domain.Dto.Issue;
 
 
 namespace MH.Domain.Mapping;
@@ -10,7 +9,7 @@ public class IssueMapping : Profile
 {
     public IssueMapping()
     {
-        CreateMap<Issue,IssueModel>().ReverseMap();
-        CreateMap<Issue,IssueViewModel>().ReverseMap();
+        CreateMap<DBModel.Issue,IssueModel>().ReverseMap();
+        CreateMap<DBModel.Issue,Issue>().ReverseMap();
     }
 }

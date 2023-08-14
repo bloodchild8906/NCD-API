@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 
 namespace MH.Api.Controllers;
 
@@ -32,7 +32,7 @@ public class UserProfileController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<UserProfileViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<UserProfile>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _userProfileService.GetAll();
@@ -41,7 +41,7 @@ public class UserProfileController : BaseController
 
     [HttpGet]
     [Route("GetById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserProfileViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserProfile))]
     public async Task<ActionResult> GetById([FromQuery] int id)
     {
         var result = await _userProfileService.GetById(id);
@@ -49,7 +49,7 @@ public class UserProfileController : BaseController
     }
     [HttpGet]
     [Route("GetByUserId")]
-    [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserProfileViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserProfile))]
     public async Task<ActionResult> GetByUserId()
     {
         var result = await _userProfileService.GetByUserId(_currentUser.User.Id);

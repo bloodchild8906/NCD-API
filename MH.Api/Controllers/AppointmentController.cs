@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
-using MH.Domain.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -30,7 +30,7 @@ public class AppointmentController : BaseController
 
     [HttpGet]
     [Route("GetAll")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointment data", typeof(List<AppointmentViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointment data", typeof(List<Appointment>))]
     public async Task<ActionResult> GetAll()
     {
         var result = await _appointmentService.GetAll();
@@ -39,7 +39,7 @@ public class AppointmentController : BaseController
 
     [HttpGet]
     [Route("GetById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointment data", typeof(AppointmentViewModel))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointment data", typeof(Appointment))]
     public async Task<ActionResult> GetById([FromQuery] int id)
     {
         var result = await _appointmentService.GetById(id);
@@ -48,7 +48,7 @@ public class AppointmentController : BaseController
 
     [HttpGet]
     [Route("GetByPatientId")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointments data", typeof(List<AppointmentViewModel>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Appointments data", typeof(List<Appointment>))]
     public async Task<ActionResult> GetByPatientId([FromQuery] int patientId)
     {
         var result = await _appointmentService.GetByPatientId(patientId);
