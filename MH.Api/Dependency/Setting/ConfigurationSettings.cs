@@ -5,7 +5,8 @@ namespace MH.Api.Dependency.Setting;
 
 public static class ConfigurationSettings
 {
-    public static IServiceCollection AddConfigurationService(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConfigurationService(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var mailSettings = configuration.GetSection(ConfigOptions.MailSettingsConfigName).Get<MailSettings>();
         services.AddSingleton(mailSettings);

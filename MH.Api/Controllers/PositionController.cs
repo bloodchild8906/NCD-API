@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
 using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -11,8 +11,8 @@ namespace MH.Api.Controllers;
 [Authorize]
 public class PositionController : BaseController
 {
-    private readonly IPositionService _positionService;
     private readonly ICurrentUser _currentUser;
+    private readonly IPositionService _positionService;
 
     public PositionController(IPositionService positionService, ICurrentUser currentUser)
     {

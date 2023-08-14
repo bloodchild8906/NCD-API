@@ -9,6 +9,7 @@ namespace MH.Api.Controllers;
 public class PermissionController : BaseController
 {
     private readonly IPermissionService _permissionService;
+
     public PermissionController(IPermissionService permissionService)
     {
         _permissionService = permissionService;

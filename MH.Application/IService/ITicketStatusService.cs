@@ -1,7 +1,6 @@
 using MH.Domain.Dto;
 using MH.Domain.Model;
 
-
 namespace MH.Application.IService;
 
 public interface ITicketStatusService
@@ -10,5 +9,5 @@ public interface ITicketStatusService
     Task<TicketStatus> GetById(int id);
     Task Add(TicketStatusModel ticketStatus);
     Task Update(TicketStatusModel ticketStatus);
-    Task Delete(int id); 
+    Task Delete(int id);
 }

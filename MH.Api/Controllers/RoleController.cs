@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MH.Application.IService;
+using MH.Domain.DBModel;
+using MH.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MH.Domain.Model;
-using MH.Application.IService;
-using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
-using Role = MH.Domain.Dto.Role;
 
 namespace MH.Api.Controllers;
 
 [Authorize]
 public class RoleController : BaseController
 {
-    private readonly RoleManager<Domain.DBModel.Role> _roleManager;
+    private readonly RoleManager<Role> _roleManager;
     private readonly IRoleService _roleService;
-    public RoleController(RoleManager<Domain.DBModel.Role> roleManager, IRoleService roleService)
+
+    public RoleController(RoleManager<Role> roleManager, IRoleService roleService)
     {
         _roleManager = roleManager;
         _roleService = roleService;
@@ -22,23 +23,23 @@ public class RoleController : BaseController
 
     [HttpGet]
     [Route("GetRoles")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<Role>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Return Role data", typeof(List<Domain.Dto.Role>))]
     public async Task<IActionResult> GetRoles()
     {
         var roles = (await _roleManager.Roles.ToListAsync())
-            .Select(x=> new Role 
-            { 
+            .Select(x => new Domain.Dto.Role
+            {
                 Id = x.Id,
                 Name = x.Name
             });
         return Ok(roles);
     }
-        
+
     [HttpPost]
     [Route("Add")]
     public async Task<IActionResult> Add([FromBody] RoleModel roleModel)
     {
-        var role = new Domain.DBModel.Role()
+        var role = new Role
         {
             Name = roleModel.Name,
             NormalizedName = roleModel.Name.ToUpper(),
@@ -47,15 +48,15 @@ public class RoleController : BaseController
         await _roleManager.CreateAsync(role);
         return Ok();
     }
-        
+
     [HttpPatch]
     [Route("Update")]
     public async Task<IActionResult> Update([FromBody] RoleModel roleModel)
     {
         var existingRole = await _roleService.GetById(roleModel.Id);
-        if(existingRole != null)
+        if (existingRole != null)
         {
-            var role = new Domain.DBModel.Role()
+            var role = new Role
             {
                 Id = existingRole.Id,
                 Name = roleModel.Name,
@@ -65,7 +66,7 @@ public class RoleController : BaseController
             await _roleManager.UpdateAsync(role);
             return Ok();
         }
-            
+
         return BadRequest();
     }
 }

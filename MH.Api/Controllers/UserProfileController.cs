@@ -1,18 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using MH.Application.IService;
 using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
 
 [Authorize]
 public class UserProfileController : BaseController
 {
-    private readonly IUserProfileService _userProfileService;
     private readonly ICurrentUser _currentUser;
+    private readonly IUserProfileService _userProfileService;
 
     public UserProfileController(IUserProfileService userProfileService, ICurrentUser currentUser)
     {
@@ -47,6 +47,7 @@ public class UserProfileController : BaseController
         var result = await _userProfileService.GetById(id);
         return Ok(result);
     }
+
     [HttpGet]
     [Route("GetByUserId")]
     [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserProfile))]

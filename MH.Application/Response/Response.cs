@@ -1,13 +1,14 @@
-﻿
-
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using MH.Application.Enum;
 
 namespace MH.Application.Response;
 
 public class Response
 {
-    public Response() => Expression.Empty();
+    public Response()
+    {
+        Expression.Empty();
+    }
 
     public Response(ResponseStatus status, string message)
     {

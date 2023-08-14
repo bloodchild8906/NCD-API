@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MH.Domain.DBModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -11,7 +11,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         builder.HasIndex(x => x.PositionId)
             .IsUnique(false);
         builder.HasIndex(x => x.PhoneNumber)
-            .IsUnique(true);
+            .IsUnique();
 
         builder.Property(x => x.Email)
             .IsRequired()

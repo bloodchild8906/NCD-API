@@ -4,7 +4,14 @@ namespace MH.Domain.UnitOfWork;
 
 public interface IUnitOfWork
 {
+    void ClearChangeTracker();
+    void Commit();
+    void Rollback();
+    Task CommitAsync();
+    Task RollbackAsync();
+
     #region Repositories
+
     IPositionRepository PositionRepository { get; }
     IIssueRepository IssueRepository { get; }
     ITicketDetailsRepository TicketDetailsRepository { get; }
@@ -16,10 +23,6 @@ public interface IUnitOfWork
     IPatientRepository PatientRepository { get; }
     IContactDetailsRepository ContactDetailsRepository { get; }
     IUserProfileRepository UserProfileRepository { get; }
+
     #endregion
-    void ClearChangeTracker();
-    void Commit();
-    void Rollback();
-    Task CommitAsync();
-    Task RollbackAsync();
 }

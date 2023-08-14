@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
 using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -11,8 +11,8 @@ namespace MH.Api.Controllers;
 [Authorize]
 public class PatientController : BaseController
 {
-    private readonly IPatientService _patientService;
     private readonly ICurrentUser _currentUser;
+    private readonly IPatientService _patientService;
 
     public PatientController(IPatientService patientService, ICurrentUser currentUser)
     {

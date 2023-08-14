@@ -1,17 +1,16 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using Position = MH.Domain.Dto.Position;
-
 
 namespace MH.Application.Service;
 
 public class PositionService : IPositionService
 {
-    private readonly IPositionRepository _positionRepository;
     private readonly IMapper _mapper;
+    private readonly IPositionRepository _positionRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public PositionService(IPositionRepository positionRepository, IMapper mapper, IUnitOfWork unitOfWork)

@@ -1,12 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using MH.Application.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using MH.Domain.Constant;
 using MH.Domain.DBModel;
 using MH.Infrastructure.DBContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MH.Api.Authentication;
 
@@ -41,7 +41,7 @@ public static class AuthenticationExtension
             {
                 option.SaveToken = true;
                 option.RequireHttpsMetadata = false;
-                option.TokenValidationParameters = new TokenValidationParameters()
+                option.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateAudience = true,
                     ValidateIssuer = true,
@@ -52,7 +52,7 @@ public static class AuthenticationExtension
                     RequireExpirationTime = false,
                     ValidateIssuerSigningKey = false,
                     RequireSignedTokens = false,
-                    SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+                    SignatureValidator = delegate(string token, TokenValidationParameters parameters)
                     {
                         var jwt = new JwtSecurityToken(token);
                         return jwt;

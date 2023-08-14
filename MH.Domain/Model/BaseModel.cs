@@ -11,12 +11,15 @@ public class BaseModel<TId> : IBaseEntity<TId>, IAuditable
         DateCreated = DateTime.Now;
         LastUpdated = DateTime.Now;
     }
-    public TId Id { get; set; }
+
     [Column(TypeName = DbDataType.DateTime)]
     public DateTime DateCreated { get; set; }
+
     public int CreatedBy { get; set; }
+
     [Column(TypeName = DbDataType.DateTime)]
     public DateTime? LastUpdated { get; set; }
-    public int? UpdatedBy { get; set; }
 
+    public int? UpdatedBy { get; set; }
+    public TId Id { get; set; }
 }

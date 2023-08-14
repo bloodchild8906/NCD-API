@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Authorization;
 using MH.Application.IService;
 using MH.Domain.IEntity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MH.Api.Controllers;
 
 [Authorize]
 public class OtpController : BaseController
 {
-    private readonly IOtpService _otpService;
     private readonly ICurrentUser _currentUser;
+    private readonly IOtpService _otpService;
 
     public OtpController(IOtpService otpService, ICurrentUser currentUser)
     {

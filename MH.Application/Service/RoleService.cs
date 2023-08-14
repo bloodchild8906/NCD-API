@@ -8,6 +8,13 @@ public class RoleService : IRoleService
 {
     private readonly IRoleRepository _roleRepository;
 
-    public RoleService(IRoleRepository roleRepository) => _roleRepository = roleRepository;
-    public async Task<Role> GetById(int id) => await _roleRepository.GetById(id);
+    public RoleService(IRoleRepository roleRepository)
+    {
+        _roleRepository = roleRepository;
+    }
+
+    public async Task<Role> GetById(int id)
+    {
+        return await _roleRepository.GetById(id);
+    }
 }

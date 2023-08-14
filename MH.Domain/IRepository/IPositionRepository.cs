@@ -4,5 +4,4 @@ namespace MH.Domain.IRepository;
 
 public interface IPositionRepository : IRepository<Position, int>
 {
-        
 }

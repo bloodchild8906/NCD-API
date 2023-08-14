@@ -5,7 +5,8 @@ namespace MH.Infrastructure.UnitOfWork;
 public class BaseUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext;
-    public BaseUnitOfWork(ApplicationDbContext dbContext) 
+
+    public BaseUnitOfWork(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -16,17 +17,25 @@ public class BaseUnitOfWork
     }
 
     public void Commit()
-        => _dbContext.SaveChanges();
+    {
+        _dbContext.SaveChanges();
+    }
 
 
     public async Task CommitAsync()
-        => await _dbContext.SaveChangesAsync();
+    {
+        await _dbContext.SaveChangesAsync();
+    }
 
 
     public void Rollback()
-        => _dbContext.Dispose();
+    {
+        _dbContext.Dispose();
+    }
 
 
     public async Task RollbackAsync()
-        => await _dbContext.DisposeAsync();
+    {
+        await _dbContext.DisposeAsync();
+    }
 }

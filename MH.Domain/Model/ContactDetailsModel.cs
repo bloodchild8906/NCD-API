@@ -1,4 +1,3 @@
-
 namespace MH.Domain.Model;
 
 public class ContactDetailsModel
@@ -9,5 +8,4 @@ public class ContactDetailsModel
     public int ContactDataTypeId { get; set; }
     public int ContactEntityId { get; set; }
     public string Data { get; set; }
-
 }

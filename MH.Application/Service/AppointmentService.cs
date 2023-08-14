@@ -1,10 +1,9 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using Appointment = MH.Domain.Dto.Appointment;
-
 
 namespace MH.Application.Service;
 
@@ -20,6 +19,7 @@ public class AppointmentService : IAppointmentService
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     public async Task Add(AppointmentModel appointment)
     {
         var data = _mapper.Map<Domain.DBModel.Appointment>(appointment);
@@ -31,27 +31,28 @@ public class AppointmentService : IAppointmentService
     {
         var data = await _unitOfWork
             .AppointmentRepository
-                //WHY?? what is x and y?
-                //name things what they are
-            .GetAll(appointment=> !appointment.IsDeleted, appointment=> appointment.Patient);
+            //WHY?? what is x and y?
+            //name things what they are
+            .GetAll(appointment => !appointment.IsDeleted, appointment => appointment.Patient);
         var result = _mapper.Map<List<Appointment>>(data);
-        return result.OrderByDescending(appointmentViewModel=> appointmentViewModel.DateCreated).ToList();
+        return result.OrderByDescending(appointmentViewModel => appointmentViewModel.DateCreated).ToList();
     }
 
     public async Task<Appointment> GetById(int id)
     {
         var data = await _unitOfWork
             .AppointmentRepository
-            .FindBy(appointment => !appointment.IsDeleted && appointment.Id == id, 
+            .FindBy(appointment => !appointment.IsDeleted && appointment.Id == id,
                 appointment => appointment.Patient);
         var result = _mapper.Map<Appointment>(data);
         return result;
     }
+
     public async Task<List<Appointment>> GetByPatientId(int patientId)
     {
         var data = await _unitOfWork
             .AppointmentRepository
-            .GetAll(appointment => !appointment.IsDeleted && appointment.PatientId == patientId, 
+            .GetAll(appointment => !appointment.IsDeleted && appointment.PatientId == patientId,
                 appointment => appointment.Patient);
         var result = _mapper.Map<List<Appointment>>(data);
         return result;
@@ -75,5 +76,5 @@ public class AppointmentService : IAppointmentService
         existingData.IsDeleted = true;
         await _unitOfWork.AppointmentRepository.Update(existingData);
         await _unitOfWork.CommitAsync();
-    }  
+    }
 }

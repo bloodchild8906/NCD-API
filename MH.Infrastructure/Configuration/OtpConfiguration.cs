@@ -1,6 +1,6 @@
+using MH.Domain.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -19,7 +19,6 @@ public class OtpConfiguration : IEntityTypeConfiguration<Otp>
             .HasMaxLength(100);
         builder.Property(x => x.MobileNo)
             .HasMaxLength(100);
-
 
 
         //builder.HasOne(x => x.CreatedByUser)

@@ -1,7 +1,6 @@
 using MH.Domain.Dto;
 using MH.Domain.Model;
 
-
 namespace MH.Application.IService;
 
 public interface IPositionService
@@ -10,5 +9,5 @@ public interface IPositionService
     Task<Position> GetById(int id);
     Task Add(PositionModel position);
     Task Update(PositionModel position);
-    Task Delete(int id); 
+    Task Delete(int id);
 }

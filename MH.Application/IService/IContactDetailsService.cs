@@ -1,7 +1,6 @@
 using MH.Domain.Dto;
 using MH.Domain.Model;
 
-
 namespace MH.Application.IService;
 
 public interface IContactDetailsService
@@ -10,5 +9,5 @@ public interface IContactDetailsService
     Task<ContactDetail> GetByUserId(int userId);
     Task Add(ContactDetailsModel contactDetails);
     Task Update(ContactDetailsModel contactDetails);
-    Task Delete(int id); 
+    Task Delete(int id);
 }

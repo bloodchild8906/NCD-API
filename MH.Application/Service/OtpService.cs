@@ -1,23 +1,23 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
 using MH.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
-using Otp = MH.Domain.Dto.Otp;
-
 
 namespace MH.Application.Service;
 
 public class OtpService : IOtpService
 {
-    private readonly IOtpRepository _otpRepository;
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ApplicationDbContext _dbContext;
+    private readonly IMapper _mapper;
+    private readonly IOtpRepository _otpRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public OtpService(IOtpRepository otpRepository, IMapper mapper, IUnitOfWork unitOfWork, ApplicationDbContext dbContext)
+    public OtpService(IOtpRepository otpRepository, IMapper mapper, IUnitOfWork unitOfWork,
+        ApplicationDbContext dbContext)
     {
         _otpRepository = otpRepository;
         _mapper = mapper;
@@ -42,7 +42,7 @@ public class OtpService : IOtpService
         await _unitOfWork.CommitAsync();
     }
 
-        
+
     public async Task<Otp> GetById(int id)
     {
         var data = await _unitOfWork

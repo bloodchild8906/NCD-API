@@ -1,6 +1,6 @@
+using MH.Domain.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -17,7 +17,6 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
             .HasDefaultValue(false);
         builder.Property(x => x.Name)
             .HasMaxLength(250);
-
 
 
         builder.HasOne(x => x.CreatedByUser)

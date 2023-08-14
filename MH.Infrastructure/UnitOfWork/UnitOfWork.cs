@@ -13,38 +13,52 @@ public class UnitOfWork : BaseUnitOfWork, IUnitOfWork
     {
         _dbContext = dbContext;
     }
+
     #region Repositories
 
     private IIssueRepository _issueRepository;
     public IIssueRepository IssueRepository => _issueRepository ?? new IssueRepository(_dbContext);
 
     private ITicketDetailsRepository _ticketDetailsRepository;
-    public ITicketDetailsRepository TicketDetailsRepository => _ticketDetailsRepository ?? new TicketDetailsRepository(_dbContext);
+
+    public ITicketDetailsRepository TicketDetailsRepository =>
+        _ticketDetailsRepository ?? new TicketDetailsRepository(_dbContext);
 
     private IPriorityRepository _priorityRepository;
     public IPriorityRepository PriorityRepository => _priorityRepository ?? new PriorityRepository(_dbContext);
 
     private ITicketStatusRepository _ticketStatusRepository;
-    public ITicketStatusRepository TicketStatusRepository => _ticketStatusRepository ?? new TicketStatusRepository(_dbContext);
+
+    public ITicketStatusRepository TicketStatusRepository =>
+        _ticketStatusRepository ?? new TicketStatusRepository(_dbContext);
 
     private IOtpRepository _otpRepository;
     public IOtpRepository OtpRepository => _otpRepository ?? new OtpRepository(_dbContext);
 
     private IAppointmentRepository _appointmentRepository;
-    public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(_dbContext);
+
+    public IAppointmentRepository AppointmentRepository =>
+        _appointmentRepository ?? new AppointmentRepository(_dbContext);
 
     private IMedicalHistoryRepository _medicalHistoryRepository;
-    public IMedicalHistoryRepository MedicalHistoryRepository => _medicalHistoryRepository ?? new MedicalHistoryRepository(_dbContext);
+
+    public IMedicalHistoryRepository MedicalHistoryRepository =>
+        _medicalHistoryRepository ?? new MedicalHistoryRepository(_dbContext);
 
     private IPatientRepository _patientRepository;
     public IPatientRepository PatientRepository => _patientRepository ?? new PatientRepository(_dbContext);
 
     private IContactDetailsRepository _contactDetailsRepository;
-    public IContactDetailsRepository ContactDetailsRepository => _contactDetailsRepository ?? new ContactDetailsRepository(_dbContext);
+
+    public IContactDetailsRepository ContactDetailsRepository =>
+        _contactDetailsRepository ?? new ContactDetailsRepository(_dbContext);
 
     private IPositionRepository _positionRepository;
     public IPositionRepository PositionRepository => _positionRepository ?? new PositionRepository(_dbContext);
     private IUserProfileRepository _userProfileRepository;
-    public IUserProfileRepository UserProfileRepository => _userProfileRepository ?? new UserProfileRepository(_dbContext);
+
+    public IUserProfileRepository UserProfileRepository =>
+        _userProfileRepository ?? new UserProfileRepository(_dbContext);
+
     #endregion
 }

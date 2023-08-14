@@ -1,6 +1,6 @@
 using AutoMapper;
+using MH.Domain.DBModel;
 using MH.Domain.Model;
-using MedicalHistory = MH.Domain.Dto.MedicalHistory;
 
 namespace MH.Domain.Mapping;
 
@@ -8,8 +8,8 @@ public class MedicalHistoryMapping : Profile
 {
     public MedicalHistoryMapping()
     {
-        CreateMap<MedicalHistoryModel, DBModel.MedicalHistory>();
-        CreateMap<DBModel.MedicalHistory, MedicalHistory>()
+        CreateMap<MedicalHistoryModel, MedicalHistory>();
+        CreateMap<MedicalHistory, Dto.MedicalHistory>()
             .ForMember(src => src.Name, dest => dest.MapFrom(x => x.Patient.Name))
             .ForMember(src => src.Surname, dest => dest.MapFrom(x => x.Patient.Surname))
             .ForMember(src => src.PhoneNumber, dest => dest.MapFrom(x => x.Patient.PhoneNumber))

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Permission = MH.Domain.Dto.Permission;
+using MH.Domain.Dto;
 
 namespace MH.Domain.Mapping;
 

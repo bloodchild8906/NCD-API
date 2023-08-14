@@ -1,3 +1,7 @@
 ﻿namespace MH.Application.Enum;
 
-public enum ResponseStatus { Failed, Ok }
+public enum ResponseStatus
+{
+    Failed,
+    Ok
+}

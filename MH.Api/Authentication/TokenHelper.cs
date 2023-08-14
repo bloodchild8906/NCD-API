@@ -1,16 +1,16 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using MH.Domain.Constant;
 using MH.Domain.DBModel;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MH.Api.Authentication;
 
 public class TokenHelper
 {
     private readonly IConfiguration _configuration;
-        
+
     public TokenHelper(IConfiguration configuration)
     {
         _configuration = configuration;
@@ -20,24 +20,22 @@ public class TokenHelper
     {
         var authClaims = new List<Claim>
         {
-            new Claim(ClaimConstant.Id, user.Id.ToString()),
-            new Claim(ClaimConstant.UserName, user.UserName),
-            new Claim(ClaimConstant.FirstName, user.UserProfile.FirstName),
-            new Claim(ClaimConstant.LastName, user.UserProfile.LastName),
-            new Claim(ClaimConstant.Email, user.Email ?? ""),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClaimConstant.Id, user.Id.ToString()),
+            new(ClaimConstant.UserName, user.UserName),
+            new(ClaimConstant.FirstName, user.UserProfile.FirstName),
+            new(ClaimConstant.LastName, user.UserProfile.LastName),
+            new(ClaimConstant.Email, user.Email ?? ""),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        foreach (var userRole in userRoles)
-        {
-            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-        }
+        foreach (var userRole in userRoles) authClaims.Add(new Claim(ClaimTypes.Role, userRole));
 
         //TODO** Magic Word Should Be Replaced By Constant
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? string.Empty));
+        var authSigningKey =
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? string.Empty));
         var token = new JwtSecurityToken(
-            issuer: _configuration["JWT:ValidIssuer"],
-            audience: _configuration["JWT:ValidAudience"],
+            _configuration["JWT:ValidIssuer"],
+            _configuration["JWT:ValidAudience"],
             expires: DateTime.Now.AddHours(Convert.ToInt16(_configuration["JWT:TokenValidityInHour"])),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
@@ -62,24 +60,23 @@ public class TokenHelper
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
+            }, out var validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == ClaimConstant.Id).Value);
             if (userId <= 0) return null;
 
             foreach (var item in jwtToken.Claims)
-            {
                 switch (item.Type)
                 {
                     case ClaimTypes.Role:
                         roles.Add(item.Value);
                         break;
                 }
-            }
+
             return roles;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return null;
         }

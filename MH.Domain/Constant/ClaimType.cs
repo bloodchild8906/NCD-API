@@ -1,6 +1,4 @@
-﻿
-
-namespace MH.Domain.Constant;
+﻿namespace MH.Domain.Constant;
 
 public static class ClaimType
 {

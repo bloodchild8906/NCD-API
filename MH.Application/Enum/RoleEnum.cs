@@ -1,5 +1,9 @@
-﻿
+﻿namespace MH.Application.Enum;
 
-namespace MH.Application.Enum;
-
-public enum RoleEnum { NotSet, Admin, Doctor, Nurse }
+public enum RoleEnum
+{
+    NotSet,
+    Admin,
+    Doctor,
+    Nurse
+}

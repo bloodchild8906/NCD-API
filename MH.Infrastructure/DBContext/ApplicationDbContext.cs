@@ -1,25 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MH.Domain.DBModel;
+using MH.Domain.IEntity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MH.Domain.DBModel;
-using MH.Domain.IEntity;
 
 namespace MH.Infrastructure.DBContext;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, int, IdentityUserClaim<int>, UserRole,
+    IdentityUserLogin<int>,
     IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
-    private ICurrentUser _currentUser;
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUser currentUser) : base(options)
+    private readonly ICurrentUser _currentUser;
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUser currentUser) :
+        base(options)
     {
         _currentUser = currentUser;
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        this.ChangeTracker.LazyLoadingEnabled = false;
+        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     public DbSet<ApplicationUser?> Users { get; set; }
     public DbSet<Permission> Permission { get; set; }
     public DbSet<Otp> Otp { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -61,29 +65,30 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, int
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //optionsBuilder.EnableSensitiveDataLogging()
         //    .LogTo(Console.WriteLine);
     }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-
         foreach (var item in ChangeTracker.Entries<IAuditable>())
-        {
             switch (item.State)
             {
                 case EntityState.Added:
                     item.Entity.DateCreated = DateTime.Now;
                     item.Entity.CreatedBy = item.Entity.CreatedBy != 0 ? item.Entity.CreatedBy : _currentUser.User.Id;
-                    item.Entity.UpdatedBy = item.Entity.UpdatedBy != null ? item.Entity.UpdatedBy : _currentUser.User.Id;
+                    item.Entity.UpdatedBy =
+                        item.Entity.UpdatedBy != null ? item.Entity.UpdatedBy : _currentUser.User.Id;
                     break;
                 case EntityState.Modified:
                     item.Entity.LastUpdated = DateTime.Now;
-                    item.Entity.UpdatedBy = item.Entity.UpdatedBy != null ? item.Entity.UpdatedBy : _currentUser.User.Id;
+                    item.Entity.UpdatedBy =
+                        item.Entity.UpdatedBy != null ? item.Entity.UpdatedBy : _currentUser.User.Id;
                     break;
             }
-        }
 
         return base.SaveChangesAsync(cancellationToken);
     }

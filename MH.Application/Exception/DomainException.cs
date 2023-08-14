@@ -6,8 +6,12 @@ namespace MH.Application.Exception;
 public class DomainException : System.Exception
 {
     protected DomainException(string msg) : base(msg)
-        => Expression.Empty();
+    {
+        Expression.Empty();
+    }
 
-    public virtual int ToHttpStatusCode() 
-        => AppStatusCode.BadRequestStatusCode;
+    public virtual int ToHttpStatusCode()
+    {
+        return AppStatusCode.BadRequestStatusCode;
+    }
 }

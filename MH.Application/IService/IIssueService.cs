@@ -1,7 +1,6 @@
 using MH.Domain.Dto;
 using MH.Domain.Model;
 
-
 namespace MH.Application.IService;
 
 public interface IIssueService
@@ -10,5 +9,5 @@ public interface IIssueService
     Task<Issue> GetById(int id);
     Task Add(IssueModel issue);
     Task Update(IssueModel issue);
-    Task Delete(int id); 
+    Task Delete(int id);
 }

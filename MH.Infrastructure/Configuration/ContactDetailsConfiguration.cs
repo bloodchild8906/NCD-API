@@ -1,6 +1,6 @@
+using MH.Domain.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -31,7 +31,6 @@ public class ContactDetailsConfiguration : IEntityTypeConfiguration<ContactDetai
             .HasDefaultValue(1);
         builder.Property(x => x.ContactEntityId)
             .HasDefaultValue(1);
-
 
 
         builder.HasOne(x => x.CreatedByUser)

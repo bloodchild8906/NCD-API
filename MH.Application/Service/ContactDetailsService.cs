@@ -10,9 +10,9 @@ namespace MH.Application.Service;
 
 public class ContactDetailsService : IContactDetailsService
 {
-    private readonly IUserProfileRepository _userProfileRepository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserProfileRepository _userProfileRepository;
 
     public ContactDetailsService(IMapper mapper, IUnitOfWork unitOfWork, IUserProfileRepository userProfileRepository)
     {
@@ -59,9 +59,9 @@ public class ContactDetailsService : IContactDetailsService
     public async Task Update(ContactDetailsModel contactDetails)
     {
         var existingData = await _unitOfWork
-                .ContactDetailsRepository
-                .FindBy(details => details.UserProfile.UserId == contactDetails.Userid && !details.IsDeleted, 
-                    details => details.UserProfile);
+            .ContactDetailsRepository
+            .FindBy(details => details.UserProfile.UserId == contactDetails.Userid && !details.IsDeleted,
+                details => details.UserProfile);
         existingData.Name = contactDetails.Name;
         existingData.ContactTypeId = contactDetails.ContactTypeId;
         existingData.ContactDataTypeId = contactDetails.ContactDataTypeId;

@@ -1,7 +1,6 @@
 using AutoMapper;
+using MH.Domain.DBModel;
 using MH.Domain.Model;
-using Position = MH.Domain.Dto.Position;
-
 
 namespace MH.Domain.Mapping;
 
@@ -9,7 +8,7 @@ public class PositionMapping : Profile
 {
     public PositionMapping()
     {
-        CreateMap<DBModel.Position,PositionModel>().ReverseMap();
-        CreateMap<DBModel.Position,Position>().ReverseMap();
+        CreateMap<Position, PositionModel>().ReverseMap();
+        CreateMap<Position, Dto.Position>().ReverseMap();
     }
 }

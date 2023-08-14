@@ -1,6 +1,6 @@
 ﻿using MH.Domain.IEntity;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace MH.Api.Authentication;
 
@@ -32,7 +32,6 @@ public class CustomAuthorizationHandler : AuthorizationHandler<ClaimsAuthorizati
         }
         catch (Exception ex)
         {
-
             context.Fail();
             return;
         }
@@ -42,6 +41,7 @@ public class CustomAuthorizationHandler : AuthorizationHandler<ClaimsAuthorizati
             context.Fail();
             return;
         }
+
         context.Succeed(requirement);
     }
 }

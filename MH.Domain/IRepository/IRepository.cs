@@ -25,7 +25,10 @@ public interface IRepository<TModel, TId> where TModel : BaseModel<TId>
     //    params Expression<Func<TModel, object>>[] includes);
     Task<TModel> GetById(TId id);
     Task<TModel> FindBy(Expression<Func<TModel, bool>> filter, params Expression<Func<TModel, object>>[] includes);
-    Task<TModel> FindByAsTracking(Expression<Func<TModel, bool>> filter, params Expression<Func<TModel, object>>[] includes);
+
+    Task<TModel> FindByAsTracking(Expression<Func<TModel, bool>> filter,
+        params Expression<Func<TModel, object>>[] includes);
+
     Task Insert(TModel entity);
     Task<TModel> InsertReturn(TModel entity);
     Task InsertRange(IEnumerable<TModel> entity);

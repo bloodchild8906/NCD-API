@@ -11,7 +11,7 @@ public class ErrorHandlingMiddleware
 
     public ErrorHandlingMiddleware(RequestDelegate next)
     {
-        this._next = next;
+        _next = next;
     }
 
     public async Task Invoke(HttpContext context)
@@ -30,10 +30,7 @@ public class ErrorHandlingMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         var code = HttpStatusCode.InternalServerError;
-        if (ex is DomainException domEx)
-        {
-            code = (HttpStatusCode)domEx.ToHttpStatusCode();
-        }
+        if (ex is DomainException domEx) code = (HttpStatusCode)domEx.ToHttpStatusCode();
 
         var result = JsonConvert.SerializeObject(new { message = ex.ToString() });
         context.Response.ContentType = "application/json";

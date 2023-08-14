@@ -1,30 +1,30 @@
-﻿using MH.Application.Enum;
+﻿using AutoMapper;
+using MH.Api.Authentication;
+using MH.Application.Enum;
 using MH.Application.IService;
 using MH.Application.Response;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using MH.Api.Authentication;
 using MH.Domain.DBModel;
 using MH.Domain.Model;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MH.Infrastructure.External;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
 
 public class AuthController : BaseController
 {
+    private readonly IConfiguration _configuration;
+    private readonly IHttpClientFactory _httpClientFactory;
 
     private readonly TokenHelper _jwtExt;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly RoleManager<Domain.DBModel.Role> _roleManager;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    private readonly ISmsService _smsService;
     private readonly IOtpService _otpService;
+    private readonly RoleManager<Role> _roleManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ISmsService _smsService;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserService _userService;
 
 
@@ -32,12 +32,12 @@ public class AuthController : BaseController
         TokenHelper jwtExt,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        RoleManager<Domain.DBModel.Role> roleManager,
+        RoleManager<Role> roleManager,
         IConfiguration configuration,
         IMapper mapper,
-        IHttpClientFactory httpClientFactory, 
-        ISmsService smsService, 
-        IOtpService otpService, 
+        IHttpClientFactory httpClientFactory,
+        ISmsService smsService,
+        IOtpService otpService,
         IUserService userService)
     {
         _jwtExt = jwtExt;
@@ -56,18 +56,18 @@ public class AuthController : BaseController
     [Route("Register")]
     public async Task<IActionResult> Register(RegisterModel registerModel)
     {
-        var user = new ApplicationUser()
+        var user = new ApplicationUser
         {
             Email = registerModel.Email,
             UserName = registerModel.Email,
             PasswordHash = registerModel.Password,
             PhoneNumber = registerModel.PhoneNumber,
             Status = 0,
-            UserProfile = new UserProfile()
-            { 
+            UserProfile = new UserProfile
+            {
                 FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName,
-            }            
+                LastName = registerModel.LastName
+            }
         };
         var result = await _userManager.CreateAsync(user, user.PasswordHash);
         if (!result.Succeeded)
@@ -75,13 +75,14 @@ public class AuthController : BaseController
             var errors = result.Errors.Select(x => x.Description).ToList();
             return BadRequest(errors);
         }
+
         await _userManager.AddToRoleAsync(user, RoleEnum.Doctor.ToString());
 
         var code = new Random().Next(1000, 9999);
 
-        await _otpService.Add(new OtpModel() { Code = code, MobileNo = registerModel.PhoneNumber });
+        await _otpService.Add(new OtpModel { Code = code, MobileNo = registerModel.PhoneNumber });
         await _smsService.SendSms(registerModel.PhoneNumber, $"OTP is : {code}");
-            
+
         return Ok();
     }
 
@@ -91,10 +92,7 @@ public class AuthController : BaseController
     public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
         var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, true, false);
-        if (!result.Succeeded)
-        {
-            return BadRequest("Incorrect username/password");
-        }
+        if (!result.Succeeded) return BadRequest("Incorrect username/password");
 
         var user = await GetLoginResult(loginModel.Email);
         if (user == null) return BadRequest("User not found");
@@ -118,6 +116,7 @@ public class AuthController : BaseController
         await _userManager.UpdateAsync(user);
         return true;
     }
+
     private async Task<LoginResponse?> GetLoginResult(string email)
     {
         var existingUser = await _userManager.Users
@@ -129,7 +128,7 @@ public class AuthController : BaseController
             var userRoles = await _userManager.GetRolesAsync(existingUser);
 
             var token = await _jwtExt.GetToken(existingUser, userRoles);
-            return new LoginResponse()
+            return new LoginResponse
             {
                 Token = token,
                 Id = existingUser.Id,
@@ -139,6 +138,7 @@ public class AuthController : BaseController
                 Role = userRoles.ToList()
             };
         }
+
         return null;
     }
 }

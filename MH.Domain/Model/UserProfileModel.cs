@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Http;
 
 namespace MH.Domain.Model;
@@ -11,6 +10,4 @@ public class UserProfileModel
     public string? IdNumber { get; set; }
     public IFormFile? Photo { get; set; }
     public string? Notes { get; set; }
-
-
 }

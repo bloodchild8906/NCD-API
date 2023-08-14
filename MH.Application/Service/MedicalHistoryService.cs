@@ -1,24 +1,26 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using MedicalHistory = MH.Domain.Dto.MedicalHistory;
 
 namespace MH.Application.Service;
 
 public class MedicalHistoryService : IMedicalHistoryService
 {
-    private readonly IMedicalHistoryRepository _medicalHistoryRepository;
     private readonly IMapper _mapper;
+    private readonly IMedicalHistoryRepository _medicalHistoryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public MedicalHistoryService(IMedicalHistoryRepository medicalHistoryRepository, IMapper mapper, IUnitOfWork unitOfWork)
+    public MedicalHistoryService(IMedicalHistoryRepository medicalHistoryRepository, IMapper mapper,
+        IUnitOfWork unitOfWork)
     {
         _medicalHistoryRepository = medicalHistoryRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     public async Task Add(MedicalHistoryModel medicalHistoryModel)
     {
         var medicalHistory = new Domain.DBModel.MedicalHistory
@@ -47,23 +49,25 @@ public class MedicalHistoryService : IMedicalHistoryService
     {
         var data = await _unitOfWork
             .MedicalHistoryRepository
-            .GetAll(medicalHistory => !medicalHistory.IsDeleted, 
-            medicalHistory=> medicalHistory.Patient);
+            .GetAll(medicalHistory => !medicalHistory.IsDeleted,
+                medicalHistory => medicalHistory.Patient);
         var result = _mapper.Map<List<MedicalHistory>>(data);
-        return result.OrderByDescending(x=> x.DateCreated).ToList();
+        return result.OrderByDescending(x => x.DateCreated).ToList();
     }
 
     public async Task<MedicalHistory> GetById(int id)
     {
-        var data = await _unitOfWork.MedicalHistoryRepository.FindBy(medicalHistory => !medicalHistory.IsDeleted && medicalHistory.Id == id, y => y.Patient);
+        var data = await _unitOfWork.MedicalHistoryRepository.FindBy(
+            medicalHistory => !medicalHistory.IsDeleted && medicalHistory.Id == id, y => y.Patient);
         var result = _mapper.Map<MedicalHistory>(data);
         return result;
     }
+
     public async Task<List<MedicalHistory>> GetByPatientId(int patientId)
     {
         var data = await _unitOfWork
             .MedicalHistoryRepository
-            .GetAll(medicalHistory => !medicalHistory.IsDeleted && medicalHistory.PatientId == patientId, 
+            .GetAll(medicalHistory => !medicalHistory.IsDeleted && medicalHistory.PatientId == patientId,
                 medicalHistory => medicalHistory.Patient);
         var result = _mapper.Map<List<MedicalHistory>>(data);
         return result;
@@ -71,7 +75,8 @@ public class MedicalHistoryService : IMedicalHistoryService
 
     public async Task Update(MedicalHistoryModel medicalHistoryModel)
     {
-        var existingData = await _unitOfWork.MedicalHistoryRepository.FindBy(x => x.Id == medicalHistoryModel.Id && !x.IsDeleted);
+        var existingData =
+            await _unitOfWork.MedicalHistoryRepository.FindBy(x => x.Id == medicalHistoryModel.Id && !x.IsDeleted);
         existingData.RecordedBy = medicalHistoryModel.RecordedBy;
         existingData.PatientId = medicalHistoryModel.PatientId;
 

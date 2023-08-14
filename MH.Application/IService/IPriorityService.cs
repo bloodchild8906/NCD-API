@@ -1,8 +1,8 @@
 using MH.Domain.Dto;
 using MH.Domain.Model;
 
-
 namespace MH.Application.IService;
+
 public interface IPriorityService
 {
     Task<List<Priority>> GetAll();

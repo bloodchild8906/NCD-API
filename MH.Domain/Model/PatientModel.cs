@@ -1,4 +1,3 @@
-
 namespace MH.Domain.Model;
 
 public class PatientModel
@@ -17,5 +16,4 @@ public class PatientModel
     public string? Province { get; set; }
     public string? District { get; set; }
     public string? Institution { get; set; }
-
 }

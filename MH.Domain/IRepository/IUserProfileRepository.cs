@@ -4,5 +4,4 @@ namespace MH.Domain.IRepository;
 
 public interface IUserProfileRepository : IRepository<UserProfile, int>
 {
-        
 }

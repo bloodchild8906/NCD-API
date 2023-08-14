@@ -1,5 +1,4 @@
-﻿
-namespace MH.Domain.Model;
+﻿namespace MH.Domain.Model;
 
 public class RoleModel
 {

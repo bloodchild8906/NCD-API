@@ -9,28 +9,24 @@ public class Program
 {
     public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile("appsettings.json", false, true)
         .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-            optional: true)
+            true)
         .Build();
 
     public static void Main(string[] args)
     {
         try
         {
-            string connectionString = Configuration.GetConnectionString(ConfigOptions.DbConnName);
+            var connectionString = Configuration.GetConnectionString(ConfigOptions.DbConnName);
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.MSSqlServer(
                     connectionString,
-                    sinkOptions: new MSSqlServerSinkOptions { TableName = "Log" },
+                    new MSSqlServerSinkOptions { TableName = "Log" },
                     null,
                     null,
-                    LogEventLevel.Information,
-                    null,
-                    null,
-                    null,
-                    null
+                    LogEventLevel.Information
                 ).CreateLogger();
 
 
@@ -47,12 +43,14 @@ public class Program
         }
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
                 webBuilder.UseConfiguration(Configuration);
             });
+    }
     //.UseSerilog();
 }

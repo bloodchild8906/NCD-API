@@ -8,5 +8,4 @@ public class Permission : BaseModel<int>
 
     public virtual ApplicationUser CreatedByUser { get; set; }
     public virtual ApplicationUser UpdateByUser { get; set; }
-
 }

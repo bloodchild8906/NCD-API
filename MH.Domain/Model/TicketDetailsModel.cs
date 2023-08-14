@@ -1,4 +1,3 @@
-
 namespace MH.Domain.Model;
 
 public class TicketDetailsModel

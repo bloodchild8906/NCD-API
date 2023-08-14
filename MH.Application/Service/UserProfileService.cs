@@ -1,21 +1,19 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using UserProfile = MH.Domain.Dto.UserProfile;
-
 
 namespace MH.Application.Service;
 
 public class UserProfileService : IUserProfileService
 {
-    private readonly IUserProfileRepository _userProfileRepository;
     private readonly IMapper _mapper;
 
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserProfileRepository _userProfileRepository;
 
     public UserProfileService(IUserProfileRepository userProfileRepository, IMapper mapper, IUnitOfWork unitOfWork)
     {
@@ -23,6 +21,7 @@ public class UserProfileService : IUserProfileService
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     public async Task Add(UserProfileModel userProfileModel)
     {
         var data = _mapper.Map<Domain.DBModel.UserProfile>(userProfileModel);
@@ -32,9 +31,10 @@ public class UserProfileService : IUserProfileService
 
     public async Task<List<UserProfile>> GetAll()
     {
-        var data = await _unitOfWork.UserProfileRepository.GetAll(userProfile => !userProfile.IsDeleted,userProfile=> userProfile.User);
+        var data = await _unitOfWork.UserProfileRepository.GetAll(userProfile => !userProfile.IsDeleted,
+            userProfile => userProfile.User);
         var result = _mapper.Map<List<UserProfile>>(data);
-        return result.OrderByDescending(x=> x.DateCreated).ToList();
+        return result.OrderByDescending(x => x.DateCreated).ToList();
     }
 
     public async Task<UserProfile> GetById(int id)
@@ -43,6 +43,7 @@ public class UserProfileService : IUserProfileService
         var result = _mapper.Map<UserProfile>(data);
         return result;
     }
+
     public async Task<UserProfile> GetByUserId(int userId)
     {
         var data = await _unitOfWork.UserProfileRepository.FindBy(x => !x.IsDeleted && x.UserId == userId, x => x.User);
@@ -52,7 +53,8 @@ public class UserProfileService : IUserProfileService
 
     public async Task Update(UserProfileModel userProfile)
     {
-        var existingData = await _unitOfWork.UserProfileRepository.FindBy(x => x.UserId == userProfile.UserId && !x.IsDeleted);
+        var existingData =
+            await _unitOfWork.UserProfileRepository.FindBy(x => x.UserId == userProfile.UserId && !x.IsDeleted);
         existingData.FirstName = userProfile.FirstName;
         existingData.LastName = userProfile.LastName;
         existingData.IdNumber = userProfile.IdNumber;
@@ -62,6 +64,7 @@ public class UserProfileService : IUserProfileService
             await userProfile.Photo?.CopyToAsync(ms)!;
             existingData.Photo = ms.ToArray();
         }
+
         await _unitOfWork.UserProfileRepository.Update(existingData);
         await _unitOfWork.CommitAsync();
     }
@@ -72,5 +75,5 @@ public class UserProfileService : IUserProfileService
         existingData.IsDeleted = true;
         await _unitOfWork.UserProfileRepository.Update(existingData);
         await _unitOfWork.CommitAsync();
-    }  
+    }
 }

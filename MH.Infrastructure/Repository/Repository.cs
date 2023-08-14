@@ -1,15 +1,15 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace MH.Infrastructure.Repository;
 
-public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel: BaseModel<TId>
+public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel : BaseModel<TId>
 {
-    protected DbSet<TModel> DbSet;
     protected readonly ApplicationDbContext _context;
+    protected DbSet<TModel> DbSet;
 
     public Repository(ApplicationDbContext context)
     {
@@ -44,9 +44,10 @@ public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel: Ba
     {
         return await GetAllIncluding(includes).Where(filter).ToListAsync();
     }
+
     public async Task<IQueryable<TModel>> GetAllQueryable()
     {
-        IQueryable<TModel> queryable = DbSet.AsNoTracking();
+        var queryable = DbSet.AsNoTracking();
         return queryable;
     }
 
@@ -57,47 +58,20 @@ public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel: Ba
         return await GetAllIncludingAsTracking(includes).Where(filter).ToListAsync();
     }
 
-    //public async Task<IReadOnlyList<TModel>> GetAllPaged(
-    //    Expression<Func<TModel, bool>> filter, IPagination pagination,
-    //    params Expression<Func<TModel, object>>[] includes)
-    //{
-    //    return await GetAllIncluding(includes)
-    //        .Where(filter)
-    //        .Skip(pagination.ToSkip())
-    //        .Take(pagination.ToTake())
-    //        .ToListAsync();
-    //}
-
-    private IQueryable<TModel> GetAllIncluding
-        (params Expression<Func<TModel, object>>[] includeProperties)
-    {
-        IQueryable<TModel> queryable = DbSet.AsNoTracking();
-
-        return includeProperties.Aggregate
-            (queryable, (current, includeProperty) => current.Include(includeProperty));
-    }
-
-    private IQueryable<TModel> GetAllIncludingAsTracking
-        (params Expression<Func<TModel, object>>[] includeProperties)
-    {
-        IQueryable<TModel> queryable = DbSet;
-
-        return includeProperties.Aggregate
-            (queryable, (current, includeProperty) => current.Include(includeProperty));
-    }
-
     public async Task<TModel> GetById(TId id)
     {
         return await DbSet.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
-    public async Task<TModel> FindBy(Expression<Func<TModel, bool>> filter, params Expression<Func<TModel, object>>[] includes)
+    public async Task<TModel> FindBy(Expression<Func<TModel, bool>> filter,
+        params Expression<Func<TModel, object>>[] includes)
     {
         return await GetAllIncluding(includes)
             .FirstOrDefaultAsync(filter);
     }
 
-    public async Task<TModel> FindByAsTracking(Expression<Func<TModel, bool>> filter, params Expression<Func<TModel, object>>[] includes)
+    public async Task<TModel> FindByAsTracking(Expression<Func<TModel, bool>> filter,
+        params Expression<Func<TModel, object>>[] includes)
     {
         return await GetAllIncludingAsTracking(includes)
             .FirstOrDefaultAsync(filter);
@@ -124,10 +98,12 @@ public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel: Ba
     {
         DbSet.Update(entity);
     }
+
     public async Task UpdateRange(IEnumerable<TModel> entity)
     {
         DbSet.UpdateRange(entity);
     }
+
     public async Task Delete(TId id)
     {
         var entity = await GetById(id);
@@ -160,5 +136,34 @@ public class Repository<TModel, TId> : IRepository<TModel, TId> where TModel: Ba
     public async Task SaveAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    //public async Task<IReadOnlyList<TModel>> GetAllPaged(
+    //    Expression<Func<TModel, bool>> filter, IPagination pagination,
+    //    params Expression<Func<TModel, object>>[] includes)
+    //{
+    //    return await GetAllIncluding(includes)
+    //        .Where(filter)
+    //        .Skip(pagination.ToSkip())
+    //        .Take(pagination.ToTake())
+    //        .ToListAsync();
+    //}
+
+    private IQueryable<TModel> GetAllIncluding
+        (params Expression<Func<TModel, object>>[] includeProperties)
+    {
+        var queryable = DbSet.AsNoTracking();
+
+        return includeProperties.Aggregate
+            (queryable, (current, includeProperty) => current.Include(includeProperty));
+    }
+
+    private IQueryable<TModel> GetAllIncludingAsTracking
+        (params Expression<Func<TModel, object>>[] includeProperties)
+    {
+        IQueryable<TModel> queryable = DbSet;
+
+        return includeProperties.Aggregate
+            (queryable, (current, includeProperty) => current.Include(includeProperty));
     }
 }

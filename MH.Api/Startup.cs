@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using MH.Api.Authentication;
 using MH.Api.Dependency;
+using MH.Api.Dependency.Setting;
 using MH.Api.Middleware;
 using MH.Application.Dependency;
 using MH.Domain.Constant;
 using MH.Domain.Mapping;
-using MH.Infrastructure.Dependency;
 using MH.Infrastructure.DBContext;
+using MH.Infrastructure.Dependency;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using MH.Api.Dependency.Setting;
 
 namespace MH.Api;
 
@@ -49,7 +49,7 @@ public class Startup
             options => options.UseSqlServer(Configuration.GetConnectionString(ConfigOptions.DbConnName),
                 options => options.EnableRetryOnFailure())
         );
-            
+
         services.AddServices();
         services.AddRepositories();
         services.ApplicationServices();
@@ -70,24 +70,27 @@ public class Startup
         services.AddHttpClient();
         services.AddSwaggerGen(x =>
         {
-            x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "JWT Authorization header using the Bearer scheme.",
+                Description = "JWT Authorization header using the Bearer scheme."
             });
-            x.AddSecurityRequirement(new OpenApiSecurityRequirement {
+            x.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
-                    new OpenApiSecurityScheme {
-                        Reference = new OpenApiReference {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         }
                     },
-                    new string[] {}
+                    new string[] { }
                 }
             });
         });
@@ -95,17 +98,12 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
         if (env.IsProduction())
-        {
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-        }
         app.UseSwagger();
         app.UseSwaggerUI();
 
@@ -115,9 +113,6 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MH.Domain.DBModel;
+﻿using MH.Domain.DBModel;
 using MH.Domain.IRepository;
 using MH.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace MH.Infrastructure.Repository;
 
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
+
     public UserRepository(ApplicationDbContext context)
     {
         _context = context;
@@ -22,10 +23,7 @@ public class UserRepository : IUserRepository
     public async Task<ApplicationUser> GetUserByMobileNo(string mobileNo)
     {
         var user = await _context.Users.Where(x => x.PhoneNumber == mobileNo).FirstOrDefaultAsync();
-        if (user == null)
-        {
-            throw new Exception("No user found with this mobile no");
-        }
+        if (user == null) throw new Exception("No user found with this mobile no");
         return user;
     }
 
@@ -37,14 +35,14 @@ public class UserRepository : IUserRepository
 
     public async Task<ApplicationUser?> GetUserById(int id)
     {
-        var data= await _context.Users
+        var data = await _context.Users
             .Include(x => x.UserRoles)
             .ThenInclude(x => x.Role)
             .Include(x => x.UserProfile)
-            .Include(x=> x.UserProfile.ContactDetails)
-            .Include(x=> x.UserProfile.ContactDetails.ContactDataType)
-            .Include(x=> x.UserProfile.ContactDetails.ContactType)
-            .Include(x=> x.UserProfile.ContactDetails.ContactEntity)
+            .Include(x => x.UserProfile.ContactDetails)
+            .Include(x => x.UserProfile.ContactDetails.ContactDataType)
+            .Include(x => x.UserProfile.ContactDetails.ContactType)
+            .Include(x => x.UserProfile.ContactDetails.ContactEntity)
             .Include(x => x.Position)
             .Where(x => x.Id == id && x.Status == 1 && !x.UserProfile.IsDeleted)
             .FirstOrDefaultAsync();

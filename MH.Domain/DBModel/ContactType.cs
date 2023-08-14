@@ -1,5 +1,4 @@
-﻿
-namespace MH.Domain.DBModel;
+﻿namespace MH.Domain.DBModel;
 
 public class ContactType
 {

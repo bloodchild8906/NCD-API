@@ -1,5 +1,4 @@
-﻿
-using MH.Domain.Model;
+﻿using MH.Domain.Model;
 
 namespace MH.Domain.DBModel;
 

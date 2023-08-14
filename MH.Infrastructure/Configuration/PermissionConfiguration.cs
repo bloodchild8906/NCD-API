@@ -1,6 +1,6 @@
 ﻿using MH.Domain.DBModel;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -16,7 +16,6 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(250);
-
 
 
         builder.HasOne(x => x.CreatedByUser)

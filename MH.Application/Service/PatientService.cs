@@ -1,17 +1,16 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using Patient = MH.Domain.Dto.Patient;
-
 
 namespace MH.Application.Service;
 
 public class PatientService : IPatientService
 {
-    private readonly IPatientRepository _patientRepository;
     private readonly IMapper _mapper;
+    private readonly IPatientRepository _patientRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public PatientService(IPatientRepository patientRepository, IMapper mapper, IUnitOfWork unitOfWork)
@@ -20,6 +19,7 @@ public class PatientService : IPatientService
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     public async Task Add(PatientModel patient)
     {
         var data = _mapper.Map<Domain.DBModel.Patient>(patient);
@@ -31,7 +31,7 @@ public class PatientService : IPatientService
     {
         var data = await _unitOfWork.PatientRepository.GetAll(x => !x.IsDeleted);
         var result = _mapper.Map<List<Patient>>(data);
-        return result.OrderByDescending(x=> x.Id).ToList();
+        return result.OrderByDescending(x => x.Id).ToList();
     }
 
     public async Task<Patient> GetById(int id)
@@ -71,5 +71,5 @@ public class PatientService : IPatientService
         entity.IsDeleted = true;
         await _unitOfWork.PatientRepository.Update(entity);
         await _unitOfWork.CommitAsync();
-    }  
+    }
 }

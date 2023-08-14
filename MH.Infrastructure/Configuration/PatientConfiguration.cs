@@ -1,6 +1,6 @@
+using MH.Domain.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -29,7 +29,7 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         builder.Property(x => x.District)
             .HasMaxLength(50);
         builder.Property(x => x.Institution)
-            .HasMaxLength(50);  
+            .HasMaxLength(50);
 
         builder.HasOne(x => x.CreatedByUser)
             .WithOne(y => y.CreatedByPatient)

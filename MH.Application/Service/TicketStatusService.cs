@@ -1,17 +1,16 @@
 using AutoMapper;
 using MH.Application.IService;
+using MH.Domain.Dto;
 using MH.Domain.IRepository;
 using MH.Domain.Model;
 using MH.Domain.UnitOfWork;
-using TicketStatus = MH.Domain.Dto.TicketStatus;
-
 
 namespace MH.Application.Service;
 
 public class TicketStatusService : ITicketStatusService
 {
-    private readonly ITicketStatusRepository _ticketStatusRepository;
     private readonly IMapper _mapper;
+    private readonly ITicketStatusRepository _ticketStatusRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public TicketStatusService(ITicketStatusRepository ticketStatusRepository, IMapper mapper, IUnitOfWork unitOfWork)
@@ -20,6 +19,7 @@ public class TicketStatusService : ITicketStatusService
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
     public async Task Add(TicketStatusModel ticketStatus)
     {
         var data = _mapper.Map<Domain.DBModel.TicketStatus>(ticketStatus);
@@ -33,7 +33,7 @@ public class TicketStatusService : ITicketStatusService
             .TicketStatusRepository
             .GetAll(ticketStatus => !ticketStatus.IsDeleted);
         var result = _mapper.Map<List<TicketStatus>>(data);
-        return result.OrderByDescending(x=> x.DateCreated).ToList();
+        return result.OrderByDescending(x => x.DateCreated).ToList();
     }
 
     public async Task<TicketStatus> GetById(int id)
@@ -47,18 +47,22 @@ public class TicketStatusService : ITicketStatusService
 
     public async Task Update(TicketStatusModel ticketStatus)
     {
-        var existingData = await _unitOfWork.TicketStatusRepository.FindBy(status => status.Id == ticketStatus.Id && !status.IsDeleted);
+        var existingData =
+            await _unitOfWork.TicketStatusRepository.FindBy(status =>
+                status.Id == ticketStatus.Id && !status.IsDeleted);
         existingData.Name = ticketStatus.Name;
-                
+
         await _unitOfWork.TicketStatusRepository.Update(existingData);
         await _unitOfWork.CommitAsync();
     }
 
     public async Task Delete(int id)
     {
-        var existingData = await _unitOfWork.TicketStatusRepository.FindBy(ticketStatus => ticketStatus.Id == id && !ticketStatus.IsDeleted);
+        var existingData =
+            await _unitOfWork.TicketStatusRepository.FindBy(ticketStatus =>
+                ticketStatus.Id == id && !ticketStatus.IsDeleted);
         existingData.IsDeleted = true;
         await _unitOfWork.TicketStatusRepository.Update(existingData);
         await _unitOfWork.CommitAsync();
-    }  
+    }
 }

@@ -1,7 +1,7 @@
-﻿using MH.Domain.Model;
+﻿using MailKit.Net.Smtp;
 using MH.Domain.Configuration;
+using MH.Domain.Model;
 using MimeKit;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace MH.Application.Mail;
 
@@ -10,16 +10,9 @@ public class MailHelper : IMailHelper
     private readonly MailSettings _settings;
 
     public MailHelper(MailSettings settings)
-        => _settings = settings;
-
-    private static MimeMessage CreateMimeMessageFromEmailMessage(EmailMessageModel message)
-        => new()
-        {
-            Sender = message.Sender,
-            To = { message.Reciever },
-            Subject = message.Subject,
-            Body = new BodyBuilder { HtmlBody = message.Content }.ToMessageBody()
-        };
+    {
+        _settings = settings;
+    }
 
     //Note: this has no business logging that should be done by an interceptor
     public async Task SendEmail(string sendTo, string subject, string body)
@@ -45,5 +38,16 @@ public class MailHelper : IMailHelper
 
             return Task.CompletedTask;
         });
+    }
+
+    private static MimeMessage CreateMimeMessageFromEmailMessage(EmailMessageModel message)
+    {
+        return new MimeMessage
+        {
+            Sender = message.Sender,
+            To = { message.Reciever },
+            Subject = message.Subject,
+            Body = new BodyBuilder { HtmlBody = message.Content }.ToMessageBody()
+        };
     }
 }

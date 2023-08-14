@@ -1,6 +1,6 @@
+using MH.Domain.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MH.Domain.DBModel;
 
 namespace MH.Infrastructure.Configuration;
 
@@ -25,7 +25,6 @@ public class TicketDetailsConfiguration : IEntityTypeConfiguration<TicketDetails
             .HasMaxLength(250);
         builder.Property(x => x.Description)
             .HasMaxLength(500);
-
 
 
         builder.HasOne(x => x.CreatedByUser)

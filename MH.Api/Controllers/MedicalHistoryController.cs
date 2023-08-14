@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using MH.Application.IService;
 using MH.Domain.Dto;
 using MH.Domain.IEntity;
 using MH.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MH.Api.Controllers;
@@ -11,8 +11,8 @@ namespace MH.Api.Controllers;
 [Authorize]
 public class MedicalHistoryController : BaseController
 {
-    private readonly IMedicalHistoryService _medicalHistoryService;
     private readonly ICurrentUser _currentUser;
+    private readonly IMedicalHistoryService _medicalHistoryService;
 
     public MedicalHistoryController(IMedicalHistoryService medicalHistoryService, ICurrentUser currentUser)
     {
@@ -45,6 +45,7 @@ public class MedicalHistoryController : BaseController
         var result = await _medicalHistoryService.GetById(id);
         return Ok(result);
     }
+
     [HttpGet]
     [Route("GetByPatientId")]
     [SwaggerResponse(StatusCodes.Status200OK, "Return MedicalHistory data", typeof(MedicalHistory))]

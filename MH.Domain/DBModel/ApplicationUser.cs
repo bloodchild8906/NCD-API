@@ -16,24 +16,23 @@ public class ApplicationUser : IdentityUser<int>
     public virtual Permission? UpdatedByPermission { get; set; }
 
     public virtual UserProfile UserProfile { get; set; }
-        
+
     public virtual Position? Position { get; set; }
     public virtual Position CreatedByPosition { get; set; }
     public virtual Position? UpdatedByPosition { get; set; }
 
     public virtual ContactDetails CreatedByContactDetails { get; set; }
     public virtual ContactDetails? UpdatedByContactDetails { get; set; }
-        
+
     public virtual Patient CreatedByPatient { get; set; }
     public virtual Patient? UpdatedByPatient { get; set; }
-        
+
     public virtual MedicalHistory MedicalHistory { get; set; }
     public virtual MedicalHistory CreatedByMedicalHistory { get; set; }
     public virtual MedicalHistory? UpdatedByMedicalHistory { get; set; }
-        
+
     public virtual Appointment CreatedByAppointment { get; set; }
     public virtual Appointment? UpdatedByAppointment { get; set; }
     public virtual TicketDetails CreatedByTicketDetails { get; set; }
     public virtual TicketDetails? UpdatedByTicketDetails { get; set; }
-
 }

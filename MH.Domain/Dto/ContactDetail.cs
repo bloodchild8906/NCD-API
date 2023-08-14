@@ -1,4 +1,3 @@
-
 namespace MH.Domain.Dto;
 
 public class ContactDetail

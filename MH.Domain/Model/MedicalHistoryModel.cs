@@ -15,8 +15,10 @@ public class MedicalHistoryModel
     public double? UricAcid { get; set; }
     public double? Lactate { get; set; }
     public double? BloodPressue { get; set; }
-    public string? Recomendations { get; set; } 
+    public string? Recomendations { get; set; }
+
     public int? Remidies { get; set; }
+
     //public string Gender { get; set; }
     public DateTime? NextAppointmentDate { get; set; }
     public bool? IsMedicated { get; set; }

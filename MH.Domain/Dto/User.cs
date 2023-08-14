@@ -1,5 +1,4 @@
-﻿
-namespace MH.Domain.Dto;
+﻿namespace MH.Domain.Dto;
 
 public class User
 {
